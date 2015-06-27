@@ -1,8 +1,11 @@
 #include "stdafx.h"
+#include <array>
 #include <memory>
 #include <type_traits>
+#include <ppltasks.h>
 #include "..\..\src\Unconstrained.Profiler\CorProfilerCallback.h"
 
+using namespace concurrency;
 using namespace std;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -32,6 +35,29 @@ namespace Unconstrained
             Assert::AreEqual(original + 1, incremented);
         }
 
+        TEST_METHOD(AddRefIsThreadSafe)
+        {
+            shared_ptr<CorProfilerCallback> sut = make_shared<CorProfilerCallback>();
+            const unsigned long totalReferenceCount = 100000;
+            const int numberOfTasks = 10;
+            const int numberOfReferencesPerTask = totalReferenceCount / numberOfTasks;
+
+            array<task<void>, numberOfTasks> tasks;
+            for (int t = 0; t < numberOfTasks; t++)
+            {
+                tasks[t] = create_task([sut, numberOfReferencesPerTask] 
+                { 
+                    for (int r = 0; r < numberOfReferencesPerTask; r++)
+                    {
+                        sut->AddRef();
+                    }
+                });
+            }
+
+            when_all(begin(tasks), end(tasks)).wait();
+            Assert::AreEqual(totalReferenceCount, sut->AddRef() - 1);
+        }
+
         TEST_METHOD(ReleaseReturnsDecrementedReferenceCount)
         {
             unique_ptr<CorProfilerCallback> sut = make_unique<CorProfilerCallback>();
@@ -40,9 +66,32 @@ namespace Unconstrained
             Assert::AreEqual(original - 1, decremented);
         }
 
-        // TODO: Verify that AddRef is thread-safe
+        TEST_METHOD(ReleaseIsThreadSafe)
+        {
+            shared_ptr<CorProfilerCallback> sut = make_shared<CorProfilerCallback>();
+            const unsigned long totalReferenceCount = 100000;
+            for (int r = 0; r < totalReferenceCount + 1; r++)
+            {
+                sut->AddRef();
+            }
 
-        // TODO: Verify that Release is thread-safe
+            const int numberOfTasks = 10;
+            const int numberOfReferencesPerTask = totalReferenceCount / numberOfTasks;
+            array<task<void>, numberOfTasks> tasks;
+            for (int t = 0; t < numberOfTasks; t++)
+            {
+                tasks[t] = create_task([sut, numberOfReferencesPerTask]
+                {
+                    for (int r = 0; r < numberOfReferencesPerTask; r++)
+                    {
+                        sut->Release();
+                    }
+                });
+            }
+
+            when_all(begin(tasks), end(tasks)).wait();
+            Assert::AreEqual(0UL, sut->Release());
+        }
 
         #pragma endregion
 
