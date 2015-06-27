@@ -60,7 +60,7 @@ namespace Unconstrained
 
         TEST_METHOD(ReleaseReturnsDecrementedReferenceCount)
         {
-            unique_ptr<CorProfilerCallback> sut = make_unique<CorProfilerCallback>();
+            CorProfilerCallback* sut = new CorProfilerCallback();
             unsigned long original = sut->AddRef();
             unsigned long decremented = sut->Release();
             Assert::AreEqual(original - 1, decremented);
@@ -68,7 +68,7 @@ namespace Unconstrained
 
         TEST_METHOD(ReleaseIsThreadSafe)
         {
-            shared_ptr<CorProfilerCallback> sut = make_shared<CorProfilerCallback>();
+            CorProfilerCallback* sut = new CorProfilerCallback();
             const unsigned long totalReferenceCount = 100000;
             for (int r = 0; r < totalReferenceCount + 1; r++)
             {
@@ -92,6 +92,23 @@ namespace Unconstrained
             when_all(begin(tasks), end(tasks)).wait();
             Assert::AreEqual(0UL, sut->Release());
         }
+
+#if _DEBUG
+        TEST_METHOD(ReleaseDeletesObjectWhenCounterReachesZero)
+        {
+            CorProfilerCallback* sut = new CorProfilerCallback();
+            size_t memorySize = _msize(sut);
+            sut->AddRef();
+
+            unsigned long referenceCount = sut->Release();
+
+            long requestNumber;
+            char* fileName;
+            int lineNumber;
+            Assert::IsFalse(_CrtIsMemoryBlock(sut, memorySize, &requestNumber, &fileName, &lineNumber));
+            Assert::AreEqual(0UL, referenceCount);
+        }
+#endif
 
         #pragma endregion
 

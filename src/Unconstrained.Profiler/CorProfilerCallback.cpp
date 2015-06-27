@@ -22,7 +22,13 @@ namespace Unconstrained
 
     ULONG CorProfilerCallback::Release(void)
     {
-        return InterlockedDecrement(&this->referenceCount);
+        unsigned long newReferenceCount = InterlockedDecrement(&this->referenceCount);
+        if (0 == newReferenceCount)
+        {
+            delete this;
+        }
+
+        return newReferenceCount;
     }
 
     #pragma endregion
