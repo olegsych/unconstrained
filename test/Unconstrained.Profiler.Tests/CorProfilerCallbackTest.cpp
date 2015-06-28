@@ -21,6 +21,74 @@ namespace Unconstrained
 
         #pragma region IUnknown
 
+        TEST_METHOD(QueryInterfaceReturnsInvalidArgumentWhenObjectIsNull)
+        {
+            unique_ptr<CorProfilerCallback> sut = make_unique<CorProfilerCallback>();
+            Assert::AreEqual(E_INVALIDARG, sut->QueryInterface(IID_IUnknown, nullptr));
+        }
+
+        TEST_METHOD(QueryInterfaceReturnsNoInterfaceAndNullWhenRequestedInterfaceIsNotSupported)
+        {
+            unique_ptr<CorProfilerCallback> sut = make_unique<CorProfilerCallback>();
+            void* pObject;
+            Assert::AreEqual(E_NOINTERFACE, sut->QueryInterface(IID_IDispatch, &pObject));
+            Assert::IsNull(pObject);
+        }
+
+        TEST_METHOD(QueryInterfaceReturnsInstanceAndAddsReferenceWhenRequestedInterfaceIsIUnknown)
+        {
+            unique_ptr<CorProfilerCallback> sut = make_unique<CorProfilerCallback>();
+            void* pObject;
+            Assert::AreEqual(S_OK, sut->QueryInterface(__uuidof(IUnknown), &pObject));
+            Assert::AreEqual(static_cast<void*>(sut.get()), pObject);
+            Assert::AreEqual(1UL, sut->AddRef() - 1);
+        }
+
+        TEST_METHOD(QueryInterfaceReturnsInstanceAndAddsReferenceWhenRequestedInterfaceIsICorProfilerCallback)
+        {
+            unique_ptr<CorProfilerCallback> sut = make_unique<CorProfilerCallback>();
+            void* pObject;
+            Assert::AreEqual(S_OK, sut->QueryInterface(__uuidof(ICorProfilerCallback), &pObject));
+            Assert::AreEqual(static_cast<void*>(sut.get()), pObject);
+            Assert::AreEqual(1UL, sut->AddRef() - 1);
+        }
+
+        TEST_METHOD(QueryInterfaceReturnsInstanceAndAddsReferenceWhenRequestedInterfaceIsICorProfilerCallback2)
+        {
+            unique_ptr<CorProfilerCallback> sut = make_unique<CorProfilerCallback>();
+            void* pObject;
+            Assert::AreEqual(S_OK, sut->QueryInterface(__uuidof(ICorProfilerCallback2), &pObject));
+            Assert::AreEqual(static_cast<void*>(sut.get()), pObject);
+            Assert::AreEqual(1UL, sut->AddRef() - 1);
+        }
+
+        TEST_METHOD(QueryInterfaceReturnsInstanceAndAddsReferenceWhenRequestedInterfaceIsICorProfilerCallback3)
+        {
+            unique_ptr<CorProfilerCallback> sut = make_unique<CorProfilerCallback>();
+            void* pObject;
+            Assert::AreEqual(S_OK, sut->QueryInterface(__uuidof(ICorProfilerCallback3), &pObject));
+            Assert::AreEqual(static_cast<void*>(sut.get()), pObject);
+            Assert::AreEqual(1UL, sut->AddRef() - 1);
+        }
+
+        TEST_METHOD(QueryInterfaceReturnsInstanceAndAddsReferenceWhenRequestedInterfaceIsICorProfilerCallback4)
+        {
+            unique_ptr<CorProfilerCallback> sut = make_unique<CorProfilerCallback>();
+            void* pObject;
+            Assert::AreEqual(S_OK, sut->QueryInterface(__uuidof(ICorProfilerCallback4), &pObject));
+            Assert::AreEqual(static_cast<void*>(sut.get()), pObject);
+            Assert::AreEqual(1UL, sut->AddRef() - 1);
+        }
+
+        TEST_METHOD(QueryInterfaceReturnsInstanceAndAddsReferenceWhenRequestedInterfaceIsICorProfilerCallback5)
+        {
+            unique_ptr<CorProfilerCallback> sut = make_unique<CorProfilerCallback>();
+            void* pObject;
+            Assert::AreEqual(S_OK, sut->QueryInterface(__uuidof(ICorProfilerCallback5), &pObject));
+            Assert::AreEqual(static_cast<void*>(sut.get()), pObject);
+            Assert::AreEqual(1UL, sut->AddRef() - 1);
+        }
+
         TEST_METHOD(InitialReferenceCountIsZero)
         {
             unique_ptr<CorProfilerCallback> sut = make_unique<CorProfilerCallback>();
@@ -93,7 +161,9 @@ namespace Unconstrained
             Assert::AreEqual(0UL, sut->Release());
         }
 
-#if _DEBUG
+        #if _DEBUG
+
+        // This test relies on _CrtIsMemoryBlock macro which is not defined in release configuration
         TEST_METHOD(ReleaseDeletesObjectWhenCounterReachesZero)
         {
             CorProfilerCallback* sut = new CorProfilerCallback();
@@ -108,7 +178,8 @@ namespace Unconstrained
             Assert::IsFalse(_CrtIsMemoryBlock(sut, memorySize, &requestNumber, &fileName, &lineNumber));
             Assert::AreEqual(0UL, referenceCount);
         }
-#endif
+
+        #endif
 
         #pragma endregion
 

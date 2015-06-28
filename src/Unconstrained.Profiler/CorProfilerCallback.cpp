@@ -10,9 +10,27 @@ namespace Unconstrained
 
     #pragma region IUnknown
 
-    HRESULT CorProfilerCallback::QueryInterface(REFIID riid, void ** ppvObject)
+    HRESULT CorProfilerCallback::QueryInterface(const GUID& interfaceId, void** ppObject)
     {
-        return E_NOTIMPL;
+        if (!ppObject)
+        {
+            return E_INVALIDARG;
+        }
+
+        *ppObject = nullptr;
+        if (__uuidof(IUnknown) == interfaceId ||
+            __uuidof(ICorProfilerCallback) == interfaceId ||
+            __uuidof(ICorProfilerCallback2) == interfaceId ||
+            __uuidof(ICorProfilerCallback3) == interfaceId ||
+            __uuidof(ICorProfilerCallback4) == interfaceId ||
+            __uuidof(ICorProfilerCallback5) == interfaceId)
+        {
+            *ppObject = this;
+            this->AddRef();
+            return S_OK;
+        }
+
+        return E_NOINTERFACE;
     }
 
     ULONG CorProfilerCallback::AddRef(void)
