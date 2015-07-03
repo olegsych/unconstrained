@@ -26,5 +26,8 @@
     <ClCompile Include="CorProfilerCallbackTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CorProfilerCallbackFactoryTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
