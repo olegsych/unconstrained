@@ -13,7 +13,7 @@ namespace Unconstrained
 
         #pragma region IUnknown
 
-        virtual HRESULT __stdcall QueryInterface(REFIID riid, void ** ppvObject) override;
+        virtual HRESULT __stdcall QueryInterface(const GUID& interfaceId, void** ppObject) override;
         virtual ULONG __stdcall AddRef(void) override;
         virtual ULONG __stdcall Release(void) override;
 

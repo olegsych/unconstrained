@@ -175,7 +175,7 @@ namespace Unconstrained
             long requestNumber;
             char* fileName;
             int lineNumber;
-            Assert::IsFalse(_CrtIsMemoryBlock(sut, memorySize, &requestNumber, &fileName, &lineNumber));
+            Assert::AreEqual(FALSE, _CrtIsMemoryBlock(sut, memorySize, &requestNumber, &fileName, &lineNumber));
             Assert::AreEqual(0UL, referenceCount);
         }
 
