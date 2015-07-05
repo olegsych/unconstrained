@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "CorProfilerCallback.h"
 #include "CorProfilerCallbackFactory.h"
 
 namespace Unconstrained
@@ -44,7 +45,26 @@ namespace Unconstrained
 
     HRESULT CorProfilerCallbackFactory::CreateInstance(IUnknown* outer, const GUID& interfaceId, void** object)
     {
-        return E_NOTIMPL;
+        if (!object)
+        {
+            return E_INVALIDARG;
+        }
+
+        if (outer)
+        {
+            *object = nullptr;
+            return CLASS_E_NOAGGREGATION;
+        }
+
+        CorProfilerCallback* instance = new CorProfilerCallback();
+        HRESULT result = instance->QueryInterface(interfaceId, object);
+        if (FAILED(result))
+        {
+            delete instance;
+            return result;
+        }
+
+        return S_OK;
     }
 
     HRESULT CorProfilerCallbackFactory::LockServer(BOOL lock)

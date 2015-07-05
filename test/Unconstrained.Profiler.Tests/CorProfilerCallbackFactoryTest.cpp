@@ -4,6 +4,7 @@
 #include <ppltasks.h>
 #include <type_traits>
 #include <Unknwnbase.h>
+#include "..\..\src\Unconstrained.Profiler\CorProfilerCallback.h"
 #include "..\..\src\Unconstrained.Profiler\CorProfilerCallbackFactory.h"
 
 using namespace concurrency;
@@ -146,6 +147,59 @@ namespace Unconstrained
             int lineNumber;
             Assert::AreEqual(FALSE, _CrtIsMemoryBlock(sut, memorySize, &requestNumber, &fileName, &lineNumber));
             Assert::AreEqual(0UL, referenceCount);
+        }
+
+        #endif
+
+        #pragma endregion
+
+        #pragma region IClassFactory
+
+        TEST_METHOD(CreateInstanceReturnsInvalidArgumentErrorWhenObjectIsNull)
+        {
+            unique_ptr<IClassFactory> sut = make_unique<CorProfilerCallbackFactory>();
+            Assert::AreEqual(E_INVALIDARG, sut->CreateInstance(nullptr, IID_IUnknown, nullptr));
+        }
+
+        TEST_METHOD(CreateInstanceReturnsNoAggregationErrorWhenOuterObjectIsSpecifiedBecauseAggregationIsNotSupported)
+        {
+            unique_ptr<IClassFactory> sut = make_unique<CorProfilerCallbackFactory>();
+            unique_ptr<IUnknown> outer = make_unique<CorProfilerCallback>();
+            void* object;
+            Assert::AreEqual(CLASS_E_NOAGGREGATION, sut->CreateInstance(outer.get(), IID_IUnknown, &object));
+            Assert::IsNull(object);
+        }
+
+        TEST_METHOD(CreateInstanceReturnsSuccessAndRequestedInterfaceInstance)
+        {
+            unique_ptr<IClassFactory> sut = make_unique<CorProfilerCallbackFactory>();
+            IUnknown* object = reinterpret_cast<IUnknown*>(-1);
+            Assert::AreEqual(S_OK, sut->CreateInstance(nullptr, __uuidof(ICorProfilerCallback), reinterpret_cast<void**>(&object)));
+            Assert::IsNotNull(dynamic_cast<ICorProfilerCallback*>(object));
+        }
+
+        TEST_METHOD(CreateInstanceReturnsNoInterfaceAndNullWhenInterfaceIsNotSupported)
+        {
+            unique_ptr<IClassFactory> sut = make_unique<CorProfilerCallbackFactory>();
+            IUnknown* object = reinterpret_cast<IUnknown*>(-1);
+            Assert::AreEqual(E_NOINTERFACE, sut->CreateInstance(nullptr, __uuidof(IDispatch), reinterpret_cast<void**>(&object)));
+            Assert::IsNull(object);
+        }
+
+        #if _DEBUG
+
+        TEST_METHOD(CreateInstanceDeletesCorProfilerCallbackInstanceWhenInterfaceIsNotSupported)
+        {
+            unique_ptr<IClassFactory> sut = make_unique<CorProfilerCallbackFactory>();
+
+            _CrtMemState memoryBefore, memoryAfter, memoryDifference;
+            _CrtMemCheckpoint(&memoryBefore);
+
+            IUnknown* object = reinterpret_cast<IUnknown*>(-1);
+            sut->CreateInstance(nullptr, __uuidof(IDispatch), reinterpret_cast<void**>(&object));
+
+            _CrtMemCheckpoint(&memoryAfter);
+            Assert::AreEqual(FALSE, _CrtMemDifference(&memoryDifference, &memoryBefore, &memoryAfter));
         }
 
         #endif
