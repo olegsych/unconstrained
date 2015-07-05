@@ -20,7 +20,7 @@ namespace Unconstrained
             Assert::IsTrue(is_base_of<IClassFactory, CorProfilerCallbackFactory>::value);
         }
 
-        TEST_METHOD(ClassIsConcreteSoThatItCanBeInstantiatedBy)
+        TEST_METHOD(ClassIsConcreteSoThatItCanBeInstantiatedByModule)
         {
             Assert::IsFalse(is_abstract<CorProfilerCallbackFactory>::value);
         }
@@ -33,12 +33,20 @@ namespace Unconstrained
             Assert::AreEqual(E_INVALIDARG, sut->QueryInterface(IID_IClassFactory, nullptr));
         }
 
-        TEST_METHOD(QueryInterfaceReturnsNoInterfaceAndNullWhenInterfaceIdIsNotIClassFactory)
+        TEST_METHOD(QueryInterfaceReturnsNoInterfaceAndNullWhenInterfaceIdIsNotSupported)
         {
             unique_ptr<CorProfilerCallbackFactory> sut = make_unique<CorProfilerCallbackFactory>();
             void* object;
             Assert::AreEqual(E_NOINTERFACE, sut->QueryInterface(IID_IDispatch, &object));
             Assert::IsNull(object);
+        }
+
+        TEST_METHOD(QueryInterfaceReturnsOkAndPointerToInstanceWhenInterfaceIdIsIUnknown)
+        {
+            unique_ptr<CorProfilerCallbackFactory> sut = make_unique<CorProfilerCallbackFactory>();
+            void* object;
+            Assert::AreEqual(S_OK, sut->QueryInterface(IID_IUnknown, &object));
+            Assert::IsTrue(static_cast<IUnknown*>(sut.get()) == reinterpret_cast<IUnknown*>(object));
         }
 
         TEST_METHOD(QueryInterfaceReturnsOkAndPointerToInstanceWhenInterfaceIdIsIClassFactory)

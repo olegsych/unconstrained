@@ -16,7 +16,8 @@ namespace Unconstrained
             return E_INVALIDARG;
         }
 
-        if (__uuidof(IClassFactory) == interfaceId)
+        if (__uuidof(IUnknown) == interfaceId ||
+            __uuidof(IClassFactory) == interfaceId)
         {
             *object = static_cast<IClassFactory*>(this);
             this->AddRef();
