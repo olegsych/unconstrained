@@ -68,6 +68,15 @@ namespace Unconstrained
 
     HRESULT CorProfilerCallbackFactory::LockServer(BOOL lock)
     {
-        return E_NOTIMPL;
+        if (lock)
+        {
+            this->AddRef();
+        }
+        else
+        {
+            this->Release();
+        }
+
+        return S_OK;
     }
 }
