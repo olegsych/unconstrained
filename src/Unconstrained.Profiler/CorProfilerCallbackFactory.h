@@ -12,10 +12,10 @@ namespace Unconstrained
 
     public:
         CorProfilerCallbackFactory();
-        virtual HRESULT __stdcall QueryInterface(const GUID& interfaceId, void** object) override;
-        virtual ULONG __stdcall AddRef(void) override;
-        virtual ULONG __stdcall Release(void) override;
-        virtual HRESULT __stdcall CreateInstance(IUnknown* outer, const GUID& interfaceId, void** object) override;
-        virtual HRESULT __stdcall LockServer(BOOL lock) override;
+        virtual HRESULT __stdcall QueryInterface(const GUID& interfaceId, void** object) noexcept override;
+        virtual ULONG __stdcall AddRef(void) noexcept override;
+        virtual ULONG __stdcall Release(void) noexcept override;
+        virtual HRESULT __stdcall CreateInstance(IUnknown* outer, const GUID& interfaceId, void** object) noexcept override;
+        virtual HRESULT __stdcall LockServer(BOOL lock) noexcept override;
     };
 }

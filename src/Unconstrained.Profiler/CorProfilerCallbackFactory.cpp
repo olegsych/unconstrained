@@ -9,7 +9,7 @@ namespace Unconstrained
         this->referenceCount = 0;
     }
 
-    HRESULT CorProfilerCallbackFactory::QueryInterface(const GUID& interfaceId, void** object)
+    HRESULT CorProfilerCallbackFactory::QueryInterface(const GUID& interfaceId, void** object) noexcept
     {
         if (!object)
         {
@@ -27,12 +27,12 @@ namespace Unconstrained
         return E_NOINTERFACE;
     }
 
-    ULONG CorProfilerCallbackFactory::AddRef(void)
+    ULONG CorProfilerCallbackFactory::AddRef(void) noexcept
     {
         return InterlockedIncrement(&this->referenceCount);
     }
 
-    ULONG CorProfilerCallbackFactory::Release(void)
+    ULONG CorProfilerCallbackFactory::Release(void) noexcept
     {
         unsigned long newReferenceCount = InterlockedDecrement(&this->referenceCount);
         if (newReferenceCount == 0)
@@ -43,7 +43,7 @@ namespace Unconstrained
         return newReferenceCount;
     }
 
-    HRESULT CorProfilerCallbackFactory::CreateInstance(IUnknown* outer, const GUID& interfaceId, void** object)
+    HRESULT CorProfilerCallbackFactory::CreateInstance(IUnknown* outer, const GUID& interfaceId, void** object) noexcept
     {
         if (!object)
         {
@@ -66,7 +66,7 @@ namespace Unconstrained
         return result;
     }
 
-    HRESULT CorProfilerCallbackFactory::LockServer(BOOL lock)
+    HRESULT CorProfilerCallbackFactory::LockServer(BOOL lock) noexcept
     {
         if (lock)
         {
