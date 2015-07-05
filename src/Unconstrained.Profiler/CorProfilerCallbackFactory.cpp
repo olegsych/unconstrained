@@ -61,10 +61,9 @@ namespace Unconstrained
         if (FAILED(result))
         {
             delete instance;
-            return result;
         }
 
-        return S_OK;
+        return result;
     }
 
     HRESULT CorProfilerCallbackFactory::LockServer(BOOL lock)
