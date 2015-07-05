@@ -5,5 +5,5 @@
 *.user
 
 /ipch
-**/debug
-**/release
+/bin
+/obj
