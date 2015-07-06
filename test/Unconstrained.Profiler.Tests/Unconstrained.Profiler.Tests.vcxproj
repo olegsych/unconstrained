@@ -91,6 +91,7 @@
   <ItemGroup>
     <ClCompile Include="CorProfilerCallbackFactoryTest.cpp" />
     <ClCompile Include="CorProfilerCallbackTest.cpp" />
+    <ClCompile Include="DllTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
