@@ -25,6 +25,12 @@ namespace Unconstrained
             Assert::IsFalse(is_abstract<CorProfilerCallbackFactory>::value);
         }
 
+        TEST_METHOD(ClassHasUniqueIdRepresentingCLSID)
+        {
+            const GUID clsid = { 0xf2ac8f68, 0x16d5, 0x4d3b, { 0xa5, 0x8, 0x85, 0x49, 0x66, 0xd3, 0x64, 0x93 } };
+            Assert::IsTrue(clsid == __uuidof(CorProfilerCallbackFactory));
+        }
+
         #pragma region IUnknown
 
         TEST_METHOD(QueryInterfaceReturnsInvalidArgResultWhenObjectIsNull)

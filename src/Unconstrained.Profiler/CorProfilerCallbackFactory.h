@@ -5,6 +5,7 @@
 
 namespace Unconstrained
 {
+    [uuid("{F2AC8F68-16D5-4D3B-A508-854966D36493}")]
     class DLLEXPORT CorProfilerCallbackFactory : public IClassFactory
     {
     private:
