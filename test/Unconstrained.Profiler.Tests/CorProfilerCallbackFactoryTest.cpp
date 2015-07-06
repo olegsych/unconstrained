@@ -218,20 +218,10 @@ namespace Unconstrained
 
         #endif
 
-        TEST_METHOD(LockServerAddsReferenceWhenLockIsTrue)
+        TEST_METHOD(LockServerReturnsNotImplementedErrorBecauseItIsNotUsedByClr)
         {
-            unique_ptr<IClassFactory> sut = make_unique<CorProfilerCallbackFactory>();
-            Assert::AreEqual(S_OK, sut->LockServer(TRUE));
-            Assert::AreEqual(1UL, sut->AddRef() - 1);
-        }
-
-        TEST_METHOD(LockServerReleasesReferenceWhenLockIsFalse)
-        {
-            unique_ptr<IClassFactory> sut = make_unique<CorProfilerCallbackFactory>();
-            sut->AddRef();
-            sut->AddRef();
-            Assert::AreEqual(S_OK, sut->LockServer(FALSE));
-            Assert::AreEqual(1UL, sut->AddRef() - 1);
+            unique_ptr<IClassFactory> sut { new CorProfilerCallbackFactory() };
+            Assert::AreEqual(E_NOTIMPL, sut->LockServer(TRUE));
         }
 
         #pragma endregion

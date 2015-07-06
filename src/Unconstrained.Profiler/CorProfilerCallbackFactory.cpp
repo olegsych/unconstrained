@@ -69,15 +69,6 @@ namespace Unconstrained
 
     HRESULT CorProfilerCallbackFactory::LockServer(BOOL lock) noexcept
     {
-        if (lock)
-        {
-            this->AddRef();
-        }
-        else
-        {
-            this->Release();
-        }
-
-        return S_OK;
+        return E_NOTIMPL;
     }
 }
