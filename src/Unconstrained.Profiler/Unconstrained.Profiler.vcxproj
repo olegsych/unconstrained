@@ -85,7 +85,6 @@
     <ClInclude Include="CorProfilerCallback.h" />
     <ClInclude Include="CorProfilerCallbackFactory.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="dllexport.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CorProfilerCallback.cpp" />
