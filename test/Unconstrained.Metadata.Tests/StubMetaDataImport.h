@@ -4,10 +4,16 @@
 #include <cor.h>
 #pragma warning(default: 4091)
 
+using namespace std;
+
 namespace Unconstrained { namespace Metadata 
 {
     class StubMetaDataImport : public IMetaDataImport2
     {
+    public:
+        function<ULONG(void)> OnAddRef = []{ return 2; };
+        function<ULONG(void)> OnRelease = []{ return 1; };
+
         virtual HRESULT __stdcall QueryInterface(REFIID riid, void ** ppvObject) override
         {
             return E_NOTIMPL;
@@ -15,12 +21,12 @@ namespace Unconstrained { namespace Metadata
 
         virtual ULONG __stdcall AddRef(void) override
         {
-            return 0;
+            return this->OnAddRef();
         }
 
         virtual ULONG __stdcall Release(void) override
         {
-            return 0;
+            return this->OnRelease();
         }
 
         virtual void __stdcall CloseEnum(HCORENUM hEnum) override

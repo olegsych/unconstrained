@@ -11,6 +11,11 @@ namespace Unconstrained { namespace Metadata
     {
     public:
         Assembly(IMetaDataImport2* metaDataImport, IMetaDataAssemblyImport* metaDataAssemblyImport);
+        ~Assembly();
+
+    private:
+        IMetaDataImport2* const metaDataImport;
+        IMetaDataAssemblyImport* const metaDataAssemblyImport;
     };
 }}
 
