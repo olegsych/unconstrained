@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+VisualStudioVersion = 14.0.23027.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{058486DA-7B73-4522-B13F-EA0D14F8ED95}"
 EndProject
@@ -11,20 +11,52 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Unconstrained.Profiler", "s
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Unconstrained.Profiler.Tests", "test\Unconstrained.Profiler.Tests\Unconstrained.Profiler.Tests.vcxproj", "{70F70222-BBA1-408D-B57C-CA863CC65FD0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Unconstrained.Metadata", "src\Unconstrained.Metadata\Unconstrained.Metadata.vcxproj", "{1571E9FF-A047-4393-AFC9-242FFA7B4F98}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E53F8046-A132-4D32-838D-D0716AD25964}"
+	ProjectSection(SolutionItems) = preProject
+		Common.props = Common.props
+		src\dllexport.h = src\dllexport.h
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Unconstrained.Metadata.Tests", "test\Unconstrained.Metadata.Tests\Unconstrained.Metadata.Tests.vcxproj", "{A2BD34E1-CED1-4365-ACE9-C052343E1C35}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{152635A0-792C-4A5B-9A25-4EA4506C9CF1}.Debug|x64.ActiveCfg = Debug|Win32
 		{152635A0-792C-4A5B-9A25-4EA4506C9CF1}.Debug|x86.ActiveCfg = Debug|Win32
 		{152635A0-792C-4A5B-9A25-4EA4506C9CF1}.Debug|x86.Build.0 = Debug|Win32
+		{152635A0-792C-4A5B-9A25-4EA4506C9CF1}.Release|x64.ActiveCfg = Release|Win32
 		{152635A0-792C-4A5B-9A25-4EA4506C9CF1}.Release|x86.ActiveCfg = Release|Win32
 		{152635A0-792C-4A5B-9A25-4EA4506C9CF1}.Release|x86.Build.0 = Release|Win32
+		{70F70222-BBA1-408D-B57C-CA863CC65FD0}.Debug|x64.ActiveCfg = Debug|Win32
 		{70F70222-BBA1-408D-B57C-CA863CC65FD0}.Debug|x86.ActiveCfg = Debug|Win32
 		{70F70222-BBA1-408D-B57C-CA863CC65FD0}.Debug|x86.Build.0 = Debug|Win32
+		{70F70222-BBA1-408D-B57C-CA863CC65FD0}.Release|x64.ActiveCfg = Release|Win32
 		{70F70222-BBA1-408D-B57C-CA863CC65FD0}.Release|x86.ActiveCfg = Release|Win32
 		{70F70222-BBA1-408D-B57C-CA863CC65FD0}.Release|x86.Build.0 = Release|Win32
+		{1571E9FF-A047-4393-AFC9-242FFA7B4F98}.Debug|x64.ActiveCfg = Debug|x64
+		{1571E9FF-A047-4393-AFC9-242FFA7B4F98}.Debug|x64.Build.0 = Debug|x64
+		{1571E9FF-A047-4393-AFC9-242FFA7B4F98}.Debug|x86.ActiveCfg = Debug|Win32
+		{1571E9FF-A047-4393-AFC9-242FFA7B4F98}.Debug|x86.Build.0 = Debug|Win32
+		{1571E9FF-A047-4393-AFC9-242FFA7B4F98}.Release|x64.ActiveCfg = Release|x64
+		{1571E9FF-A047-4393-AFC9-242FFA7B4F98}.Release|x64.Build.0 = Release|x64
+		{1571E9FF-A047-4393-AFC9-242FFA7B4F98}.Release|x86.ActiveCfg = Release|Win32
+		{1571E9FF-A047-4393-AFC9-242FFA7B4F98}.Release|x86.Build.0 = Release|Win32
+		{A2BD34E1-CED1-4365-ACE9-C052343E1C35}.Debug|x64.ActiveCfg = Debug|x64
+		{A2BD34E1-CED1-4365-ACE9-C052343E1C35}.Debug|x64.Build.0 = Debug|x64
+		{A2BD34E1-CED1-4365-ACE9-C052343E1C35}.Debug|x86.ActiveCfg = Debug|Win32
+		{A2BD34E1-CED1-4365-ACE9-C052343E1C35}.Debug|x86.Build.0 = Debug|Win32
+		{A2BD34E1-CED1-4365-ACE9-C052343E1C35}.Release|x64.ActiveCfg = Release|x64
+		{A2BD34E1-CED1-4365-ACE9-C052343E1C35}.Release|x64.Build.0 = Release|x64
+		{A2BD34E1-CED1-4365-ACE9-C052343E1C35}.Release|x86.ActiveCfg = Release|Win32
+		{A2BD34E1-CED1-4365-ACE9-C052343E1C35}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,5 +64,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{152635A0-792C-4A5B-9A25-4EA4506C9CF1} = {058486DA-7B73-4522-B13F-EA0D14F8ED95}
 		{70F70222-BBA1-408D-B57C-CA863CC65FD0} = {7B6AC3D3-F6F5-48A9-97A5-14D16C110301}
+		{1571E9FF-A047-4393-AFC9-242FFA7B4F98} = {058486DA-7B73-4522-B13F-EA0D14F8ED95}
+		{A2BD34E1-CED1-4365-ACE9-C052343E1C35} = {7B6AC3D3-F6F5-48A9-97A5-14D16C110301}
 	EndGlobalSection
 EndGlobal
