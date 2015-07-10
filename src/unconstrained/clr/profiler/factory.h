@@ -5,14 +5,14 @@
 namespace unconstrained { namespace clr { namespace profiler
 {
     [uuid("{F2AC8F68-16D5-4D3B-A508-854966D36493}")]
-    class callback_factory : public IClassFactory
+    class factory : public IClassFactory
     {
+    public:
+        factory();
+        static HRESULT get_class_object(const GUID& classId, const GUID& interfaceId, void** object);
+
     private:
         unsigned long referenceCount;
-
-    public:
-        callback_factory();
-        static HRESULT get_class_object(const GUID& classId, const GUID& interfaceId, void** object);
 
         virtual HRESULT __stdcall QueryInterface(const GUID& interfaceId, void** object) noexcept override;
         virtual ULONG __stdcall AddRef(void) noexcept override;
