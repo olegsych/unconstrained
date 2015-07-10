@@ -1,15 +1,38 @@
 #include "stdafx.h"
-#include "CorProfilerCallback.h"
-#include "CorProfilerCallbackFactory.h"
+#include "callback.h"
+#include "callback_factory.h"
 
-namespace Unconstrained
+namespace unconstrained { namespace clr { namespace profiler
 {
-    CorProfilerCallbackFactory::CorProfilerCallbackFactory()
+    callback_factory::callback_factory()
     {
         this->referenceCount = 0;
     }
 
-    HRESULT CorProfilerCallbackFactory::QueryInterface(const GUID& interfaceId, void** object) noexcept
+    HRESULT callback_factory::get_class_object(const GUID& classId, const GUID& interfaceId, void** object)
+    {
+        if (!object)
+        {
+            return E_INVALIDARG;
+        }
+
+        if (__uuidof(callback_factory) != classId)
+        {
+            *object = nullptr;
+            return CLASS_E_CLASSNOTAVAILABLE;
+        }
+
+        callback_factory* instance = new callback_factory();
+        HRESULT result = instance->QueryInterface(interfaceId, object);
+        if (FAILED(result))
+        {
+            delete instance;
+        }
+
+        return result;
+    }
+
+    HRESULT callback_factory::QueryInterface(const GUID& interfaceId, void** object) noexcept
     {
         if (!object)
         {
@@ -28,12 +51,12 @@ namespace Unconstrained
         return E_NOINTERFACE;
     }
 
-    ULONG CorProfilerCallbackFactory::AddRef(void) noexcept
+    ULONG callback_factory::AddRef(void) noexcept
     {
         return InterlockedIncrement(&this->referenceCount);
     }
 
-    ULONG CorProfilerCallbackFactory::Release(void) noexcept
+    ULONG callback_factory::Release(void) noexcept
     {
         unsigned long newReferenceCount = InterlockedDecrement(&this->referenceCount);
         if (newReferenceCount == 0)
@@ -44,7 +67,7 @@ namespace Unconstrained
         return newReferenceCount;
     }
 
-    HRESULT CorProfilerCallbackFactory::CreateInstance(IUnknown* outer, const GUID& interfaceId, void** object) noexcept
+    HRESULT callback_factory::CreateInstance(IUnknown* outer, const GUID& interfaceId, void** object) noexcept
     {
         if (!object)
         {
@@ -57,7 +80,7 @@ namespace Unconstrained
             return CLASS_E_NOAGGREGATION;
         }
 
-        CorProfilerCallback* instance = new CorProfilerCallback();
+        callback* instance = new callback();
         HRESULT result = instance->QueryInterface(interfaceId, object);
         if (FAILED(result))
         {
@@ -67,8 +90,8 @@ namespace Unconstrained
         return result;
     }
 
-    HRESULT CorProfilerCallbackFactory::LockServer(BOOL lock) noexcept
+    HRESULT callback_factory::LockServer(BOOL lock) noexcept
     {
         return E_NOTIMPL;
     }
-}
+}}}

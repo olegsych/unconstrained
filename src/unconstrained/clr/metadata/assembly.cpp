@@ -1,11 +1,11 @@
 #include "stdafx.h"
-#include "Assembly.h"
+#include "assembly.h"
 
 using namespace std;
 
-namespace Unconstrained { namespace Metadata
+namespace unconstrained { namespace clr { namespace metadata
 {
-    Assembly::Assembly(IMetaDataImport2* metaDataImport, IMetaDataAssemblyImport* metaDataAssemblyImport)
+    assembly::assembly(IMetaDataImport2* metaDataImport, IMetaDataAssemblyImport* metaDataAssemblyImport)
         : metaDataImport { metaDataImport }, metaDataAssemblyImport { metaDataAssemblyImport }
     {
         if (!metaDataImport)
@@ -22,10 +22,10 @@ namespace Unconstrained { namespace Metadata
         this->metaDataAssemblyImport->AddRef();
     }
 
-    Assembly::~Assembly()
+    assembly::~assembly()
     {
         this->metaDataImport->Release();
         this->metaDataAssemblyImport->Release();
     }
-}}
+}}}
 

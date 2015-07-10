@@ -1,14 +1,14 @@
 #include "stdafx.h"
 #include "StubMetaDataAssemblyImport.h"
 #include "StubMetaDataImport.h"
-#include "..\..\src\Unconstrained.Metadata\Assembly.h"
+#include "unconstrained\clr\metadata\assembly.h"
 
 using namespace std;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace Unconstrained { namespace Metadata 
+namespace unconstrained { namespace clr { namespace metadata 
 {
-    TEST_CLASS(AssemblyTest)
+    TEST_CLASS(assembly_test)
     {
     public:
         TEST_METHOD(ConstructorThrowsInvalidArgumentExceptionWhenMetadataImportIsNull)
@@ -18,7 +18,7 @@ namespace Unconstrained { namespace Metadata
             {
                 IMetaDataImport2* metaDataImport = nullptr;
                 StubMetaDataAssemblyImport metaDataAssemblyImport;
-                Assembly sut { metaDataImport, &metaDataAssemblyImport };
+                assembly sut { metaDataImport, &metaDataAssemblyImport };
                 Assert::Fail();
             }
             catch (const std::invalid_argument& e)
@@ -38,7 +38,7 @@ namespace Unconstrained { namespace Metadata
             {
                 StubMetaDataImport metaDataImport;
                 IMetaDataAssemblyImport* metaDataAssemblyImport = nullptr;
-                Assembly sut { &metaDataImport, metaDataAssemblyImport };
+                assembly sut { &metaDataImport, metaDataAssemblyImport };
             }
             catch (const std::invalid_argument& e)
             {
@@ -61,7 +61,7 @@ namespace Unconstrained { namespace Metadata
             };
             StubMetaDataAssemblyImport metaDataAssemblyImport;
             
-            Assembly sut { &metaDataImport, &metaDataAssemblyImport };
+            assembly sut { &metaDataImport, &metaDataAssemblyImport };
 
             Assert::IsTrue(addRefCalled);
         }
@@ -77,7 +77,7 @@ namespace Unconstrained { namespace Metadata
                 return 2;
             };
 
-            Assembly sut { &metaDataImport, &metaDataAssemblyImport };
+            assembly sut { &metaDataImport, &metaDataAssemblyImport };
 
             Assert::IsTrue(addRefCalled);
         }
@@ -92,9 +92,9 @@ namespace Unconstrained { namespace Metadata
                 return 1;
             };
             StubMetaDataAssemblyImport metaDataAssemblyImport;
-            Assembly sut { &metaDataImport, &metaDataAssemblyImport };
+            assembly sut { &metaDataImport, &metaDataAssemblyImport };
 
-            sut.~Assembly();
+            sut.~assembly();
 
             Assert::IsTrue(referenceReleased);
         }
@@ -109,11 +109,11 @@ namespace Unconstrained { namespace Metadata
                 referenceReleased = true;
                 return 1;
             };
-            Assembly sut { &metaDataImport, &metaDataAssemblyImport };
+            assembly sut { &metaDataImport, &metaDataAssemblyImport };
 
-            sut.~Assembly();
+            sut.~assembly();
 
             Assert::IsTrue(referenceReleased);
         }
     };
-}}
+}}}

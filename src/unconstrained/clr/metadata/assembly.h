@@ -3,19 +3,18 @@
 #pragma warning(disable: 4091)
 #include <cor.h>
 #pragma warning(default: 4091)
-#include "dllexport.h"
 
-namespace Unconstrained { namespace Metadata 
+namespace unconstrained { namespace clr { namespace metadata 
 {
-    class DLLEXPORT Assembly
+    class assembly
     {
     public:
-        Assembly(IMetaDataImport2* metaDataImport, IMetaDataAssemblyImport* metaDataAssemblyImport);
-        ~Assembly();
+        assembly(IMetaDataImport2* metaDataImport, IMetaDataAssemblyImport* metaDataAssemblyImport);
+        ~assembly();
 
     private:
         IMetaDataImport2* const metaDataImport;
         IMetaDataAssemblyImport* const metaDataAssemblyImport;
     };
-}}
+}}}
 

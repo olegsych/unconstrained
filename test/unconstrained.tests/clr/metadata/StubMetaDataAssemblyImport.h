@@ -6,7 +6,7 @@
 
 using namespace std;
 
-namespace Unconstrained { namespace Metadata 
+namespace unconstrained { namespace clr { namespace metadata 
 {
     class StubMetaDataAssemblyImport : public IMetaDataAssemblyImport
     {
@@ -98,4 +98,4 @@ namespace Unconstrained { namespace Metadata
             return E_NOTIMPL;
         }
     };
-}}
+}}}
