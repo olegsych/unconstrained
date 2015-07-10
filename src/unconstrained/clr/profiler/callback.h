@@ -13,6 +13,9 @@ namespace unconstrained { namespace clr { namespace profiler
     public:
         callback();
 
+    private:
+        unsigned long referenceCount;
+
         #pragma region IUnknown
 
         virtual HRESULT __stdcall QueryInterface(const GUID& interfaceId, void** ppObject) override;
@@ -132,8 +135,5 @@ namespace unconstrained { namespace clr { namespace profiler
         virtual HRESULT __stdcall ConditionalWeakTableElementReferences(ULONG cRootRefs, ObjectID keyRefIds[], ObjectID valueRefIds[], GCHandleID rootIds[]) override;
 
         #pragma endregion
-
-    private:
-        unsigned long referenceCount;
     };
 }}}

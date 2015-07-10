@@ -80,7 +80,7 @@ namespace unconstrained { namespace clr { namespace profiler
             return CLASS_E_NOAGGREGATION;
         }
 
-        callback* instance = new callback();
+        IUnknown* instance = new callback();
         HRESULT result = instance->QueryInterface(interfaceId, object);
         if (FAILED(result))
         {
