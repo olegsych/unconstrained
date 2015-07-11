@@ -3,18 +3,18 @@
 #pragma warning(disable: 4091)
 #include <cor.h>
 #pragma warning(default: 4091)
+#include "unconstrained\com\pointer.h"
 
 namespace unconstrained { namespace clr { namespace metadata 
 {
     class assembly
     {
     public:
-        assembly(IMetaDataImport2* metaDataImport, IMetaDataAssemblyImport* metaDataAssemblyImport);
-        ~assembly();
+        assembly(IMetaDataImport2* metadata, IMetaDataAssemblyImport* assembly_metadata);
 
     private:
-        IMetaDataImport2* const metaDataImport;
-        IMetaDataAssemblyImport* const metaDataAssemblyImport;
+        com::pointer<IMetaDataImport2> const metadata;
+        com::pointer<IMetaDataAssemblyImport> const assembly_metadata;
     };
 }}}
 

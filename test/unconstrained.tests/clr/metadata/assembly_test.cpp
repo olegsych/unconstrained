@@ -11,43 +11,18 @@ namespace unconstrained { namespace clr { namespace metadata
     TEST_CLASS(assembly_test)
     {
     public:
-        TEST_METHOD(ConstructorThrowsInvalidArgumentExceptionWhenMetadataImportIsNull)
+        TEST_METHOD(constructor_throws_invalid_argument_when_IMetaDataImport_is_null)
         {
-            bool invalidArgumentThrown { false };
-            try
-            {
-                IMetaDataImport2* metaDataImport = nullptr;
-                StubMetaDataAssemblyImport metaDataAssemblyImport;
-                assembly sut { metaDataImport, &metaDataAssemblyImport };
-                Assert::Fail();
-            }
-            catch (const std::invalid_argument& e)
-            {
-                invalidArgumentThrown = true;
-                std::string message { e.what() };
-                Assert::AreNotEqual(std::string::npos, message.find("metaDataImport"));
-                Assert::AreNotEqual(std::string::npos, message.find("nullptr"));
-            }
-            Assert::IsTrue(invalidArgumentThrown);
+            IMetaDataImport2* metaDataImport = nullptr;
+            StubMetaDataAssemblyImport metaDataAssemblyImport;
+            Assert::ExpectException<invalid_argument>([&] { assembly sut { metaDataImport, &metaDataAssemblyImport }; });
         }
 
-        TEST_METHOD(ConstructorThrowsInvalidArgumentExceptionWhenAssemblyImportIsNull)
+        TEST_METHOD(constructor_throws_invalid_argument_when_IMetaDataAssemblyImport_is_null)
         {
-            bool invalidArgumentThrown { false };
-            try
-            {
-                StubMetaDataImport metaDataImport;
-                IMetaDataAssemblyImport* metaDataAssemblyImport = nullptr;
-                assembly sut { &metaDataImport, metaDataAssemblyImport };
-            }
-            catch (const std::invalid_argument& e)
-            {
-                invalidArgumentThrown = true;
-                std::string message{ e.what() };
-                Assert::AreNotEqual(std::string::npos, message.find("metaDataAssemblyImport"));
-                Assert::AreNotEqual(std::string::npos, message.find("nullptr"));
-            }
-            Assert::IsTrue(invalidArgumentThrown);
+            StubMetaDataImport metaDataImport;
+            IMetaDataAssemblyImport* metaDataAssemblyImport = nullptr;
+            Assert::ExpectException<invalid_argument>([&] { assembly sut { &metaDataImport, metaDataAssemblyImport }; });
         }
 
         TEST_METHOD(ConstructorAddsReferenceToMetaDataImportBecauseItStoresItForFutureUse)
