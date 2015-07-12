@@ -10,14 +10,14 @@ using namespace std;
 namespace unconstrained { namespace com 
 {
     template <class T>
-    class pointer
+    class com_ptr
     {
     public:
-        pointer() : object { nullptr }
+        com_ptr() : object { nullptr }
         {
         }
 
-        pointer(T* object) : object { object }
+        com_ptr(T* object) : object { object }
         {
             if (!object)
             {
@@ -27,17 +27,17 @@ namespace unconstrained { namespace com
             object->AddRef();
         }
 
-        pointer(const pointer<T>& source) : object { source.object }
+        com_ptr(const com_ptr<T>& source) : object { source.object }
         {
             reference_object();
         }
 
-        pointer(pointer<T>&& source) : object { source.object }
+        com_ptr(com_ptr<T>&& source) : object { source.object }
         {
             source.object = nullptr;
         }
 
-        pointer<T>& operator=(const pointer<T>& source)
+        com_ptr<T>& operator=(const com_ptr<T>& source)
         {
             release_object();
             object = source.object;
@@ -45,13 +45,13 @@ namespace unconstrained { namespace com
             return *this;
         }
 
-        pointer<T>& operator=(pointer<T>&& source)
+        com_ptr<T>& operator=(com_ptr<T>&& source)
         {
             swap(object, source.object);
             return *this;
         }
 
-        ~pointer()
+        ~com_ptr()
         {
             release_object();
         }

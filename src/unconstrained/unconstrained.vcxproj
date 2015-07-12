@@ -135,7 +135,7 @@
     <ClInclude Include="clr\metadata\assembly.h" />
     <ClInclude Include="clr\profiler\callback.h" />
     <ClInclude Include="clr\profiler\factory.h" />
-    <ClInclude Include="com\pointer.h" />
+    <ClInclude Include="com\com_ptr.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
