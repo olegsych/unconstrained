@@ -15,80 +15,36 @@ namespace unconstrained { namespace clr { namespace metadata
         {
             IMetaDataImport2* metaDataImport = nullptr;
             StubMetaDataAssemblyImport metaDataAssemblyImport;
-            Assert::ExpectException<invalid_argument>([&] { assembly sut { metaDataImport, &metaDataAssemblyImport }; });
+            assert::throws<invalid_argument>([&] { assembly sut { metaDataImport, &metaDataAssemblyImport }; });
         }
 
         TEST_METHOD(constructor_throws_invalid_argument_when_IMetaDataAssemblyImport_is_null)
         {
             StubMetaDataImport metaDataImport;
             IMetaDataAssemblyImport* metaDataAssemblyImport = nullptr;
-            Assert::ExpectException<invalid_argument>([&] { assembly sut { &metaDataImport, metaDataAssemblyImport }; });
+            assert::throws<invalid_argument>([&] { assembly sut { &metaDataImport, metaDataAssemblyImport }; });
         }
 
-        TEST_METHOD(ConstructorAddsReferenceToMetaDataImportBecauseItStoresItForFutureUse)
+        TEST_METHOD(constructor_stores_IMetaDataImport_in_const_com_ptr_to_guarantee_release)
         {
-            StubMetaDataImport metaDataImport;
-            bool addRefCalled { false };
-            metaDataImport.OnAddRef = [&]
-            { 
-                addRefCalled = true; 
-                return 2; 
-            };
-            StubMetaDataAssemblyImport metaDataAssemblyImport;
-            
-            assembly sut { &metaDataImport, &metaDataAssemblyImport };
+            StubMetaDataImport metadata;
+            StubMetaDataAssemblyImport assembly_metadata;
+          
+            assembly sut { &metadata, &assembly_metadata };
 
-            Assert::IsTrue(addRefCalled);
+            assert::is_same<const com_ptr<IMetaDataImport2>, decltype(sut.metadata)>();
+            Assert::AreEqual<void*>(&metadata, sut.metadata.get());
         }
 
-        TEST_METHOD(ConstructorAddsReferenceToMetaDataAssemblyImportBecauseItStoresItForFutureUse)
+        TEST_METHOD(constructor_stores_IMetaDataAssemblyImport_in_const_com_ptr_to_guarantee_release)
         {
-            StubMetaDataImport metaDataImport;
-            StubMetaDataAssemblyImport metaDataAssemblyImport;
-            bool addRefCalled { false };
-            metaDataAssemblyImport.OnAddRef = [&]
-            {
-                addRefCalled = true;
-                return 2;
-            };
+            StubMetaDataImport metadata;
+            StubMetaDataAssemblyImport assembly_metadata;
 
-            assembly sut { &metaDataImport, &metaDataAssemblyImport };
+            assembly sut { &metadata, &assembly_metadata };
 
-            Assert::IsTrue(addRefCalled);
-        }
-
-        TEST_METHOD(DestructorReleasesMetaDataImportReferenceToPreventResourceLeak)
-        {
-            StubMetaDataImport metaDataImport;
-            bool referenceReleased { false };
-            metaDataImport.OnRelease = [&]
-            {
-                referenceReleased = true;
-                return 1;
-            };
-            StubMetaDataAssemblyImport metaDataAssemblyImport;
-            assembly sut { &metaDataImport, &metaDataAssemblyImport };
-
-            sut.~assembly();
-
-            Assert::IsTrue(referenceReleased);
-        }
-
-        TEST_METHOD(DestructorReleasesMetaDataAssemblyImportReferenceToPreventResourceLeak)
-        {
-            StubMetaDataImport metaDataImport;
-            StubMetaDataAssemblyImport metaDataAssemblyImport;
-            bool referenceReleased { false };
-            metaDataAssemblyImport.OnRelease = [&]
-            {
-                referenceReleased = true;
-                return 1;
-            };
-            assembly sut { &metaDataImport, &metaDataAssemblyImport };
-
-            sut.~assembly();
-
-            Assert::IsTrue(referenceReleased);
+            assert::is_same<const com_ptr<IMetaDataAssemblyImport>, decltype(sut.assembly_metadata)>();
+            Assert::AreEqual<void*>(&assembly_metadata, sut.assembly_metadata.get());
         }
     };
 }}}

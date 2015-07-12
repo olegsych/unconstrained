@@ -15,8 +15,10 @@ namespace unconstrained { namespace clr { namespace metadata
         assembly(IMetaDataImport2* metadata, IMetaDataAssemblyImport* assembly_metadata);
 
     private:
-        com_ptr<IMetaDataImport2> const metadata;
-        com_ptr<IMetaDataAssemblyImport> const assembly_metadata;
+        const com_ptr<IMetaDataImport2> metadata;
+        const com_ptr<IMetaDataAssemblyImport> assembly_metadata;
+
+        friend class assembly_test;
     };
 }}}
 

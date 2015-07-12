@@ -7,6 +7,7 @@
 #include <array>
 #include <functional>
 #include <memory>
+#include <typeinfo>
 #include <type_traits>
 
 #pragma warning(disable: 4091)
