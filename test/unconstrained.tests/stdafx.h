@@ -14,3 +14,6 @@
 #pragma warning(default: 4091)
 #include <ppltasks.h>
 #include <CppUnitTest.h>
+
+#include "assert.h"
+
