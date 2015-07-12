@@ -135,6 +135,7 @@
     <ClInclude Include="clr\metadata\assembly.h" />
     <ClInclude Include="clr\profiler\callback.h" />
     <ClInclude Include="clr\profiler\factory.h" />
+    <ClInclude Include="com\com_error.h" />
     <ClInclude Include="com\com_ptr.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
@@ -142,6 +143,7 @@
     <ClCompile Include="clr\metadata\assembly.cpp" />
     <ClCompile Include="clr\profiler\callback.cpp" />
     <ClCompile Include="clr\profiler\factory.cpp" />
+    <ClCompile Include="com\com_error.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
