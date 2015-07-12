@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="clr\metadata\StubMetaDataAssemblyImport.h" />
     <ClInclude Include="clr\metadata\StubMetaDataImport.h" />
+    <ClInclude Include="assert.h" />
     <ClInclude Include="com\stub_IUnknown.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
