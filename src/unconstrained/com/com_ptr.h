@@ -51,6 +51,11 @@ namespace unconstrained { namespace com
             return *this;
         }
 
+        operator void**()
+        {
+            return reinterpret_cast<void**>(&object);
+        }
+
         ~com_ptr()
         {
             release_object();
@@ -79,5 +84,7 @@ namespace unconstrained { namespace com
                 object->Release();
             }
         }
+
+        friend class com_ptr_test;
     };
 }}

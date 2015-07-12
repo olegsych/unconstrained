@@ -163,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="clr\metadata\assembly_test.cpp" />
+    <ClCompile Include="clr\metadata\implementation_test.cpp" />
     <ClCompile Include="clr\profiler\factory_test.cpp" />
     <ClCompile Include="clr\profiler\callback_test.cpp" />
     <ClCompile Include="com\assert.cpp" />

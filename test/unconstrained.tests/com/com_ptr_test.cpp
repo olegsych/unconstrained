@@ -224,5 +224,14 @@ namespace unconstrained { namespace com
             com_ptr<IUnknown> sut;
             sut.~com_ptr(); // no exceptions expected
         }
+
+        TEST_METHOD(voidpp_conversion_operator_returns_address_of_object_field_for_use_with_QueryInterface)
+        {
+            com_ptr<IUnknown> sut;
+
+            void** result = sut;
+
+            Assert::IsTrue(result == reinterpret_cast<void**>(&sut.object));
+        }
     };
 }}
