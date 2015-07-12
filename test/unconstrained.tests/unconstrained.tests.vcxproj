@@ -166,7 +166,7 @@
     <ClCompile Include="clr\metadata\implementation_test.cpp" />
     <ClCompile Include="clr\profiler\factory_test.cpp" />
     <ClCompile Include="clr\profiler\callback_test.cpp" />
-    <ClCompile Include="com\assert.cpp" />
+    <ClCompile Include="assert.cpp" />
     <ClCompile Include="com\com_error_test.cpp" />
     <ClCompile Include="com\com_ptr_test.cpp" />
     <ClCompile Include="com\com_test.cpp" />
