@@ -12,9 +12,10 @@ namespace unconstrained { namespace clr { namespace metadata
     class assembly
     {
     public:
-        assembly(IMetaDataImport2* metadata, IMetaDataAssemblyImport* assembly_metadata);
+        assembly(mdAssembly token, IMetaDataImport2* metadata, IMetaDataAssemblyImport* assembly_metadata);
 
     private:
+        const mdAssembly token;
         const com_ptr<IMetaDataImport2> metadata;
         const com_ptr<IMetaDataAssemblyImport> assembly_metadata;
 
