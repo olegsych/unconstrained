@@ -8,7 +8,7 @@ using namespace std;
 
 namespace unconstrained { namespace clr { namespace metadata 
 {
-    class StubMetaDataAssemblyImport : public IMetaDataAssemblyImport
+    class stub_IMetaDataAssemblyImport : public IMetaDataAssemblyImport
     {
     public:
         function<ULONG(void)> OnAddRef = []{ return 2; };

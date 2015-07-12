@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "StubMetaDataAssemblyImport.h"
-#include "StubMetaDataImport.h"
+#include "stub_IMetaDataAssemblyImport.h"
+#include "stub_IMetaDataImport2.h"
 #include "unconstrained\clr\metadata\assembly.h"
 
 using namespace std;
@@ -14,22 +14,22 @@ namespace unconstrained { namespace clr { namespace metadata
         TEST_METHOD(constructor_throws_invalid_argument_when_IMetaDataImport_is_null)
         {
             mdAssembly token {};
-            StubMetaDataAssemblyImport metaDataAssemblyImport {};
-            assert::throws<invalid_argument>([&] { assembly sut { token, nullptr, &metaDataAssemblyImport }; });
+            stub_IMetaDataAssemblyImport assembly_metadata {};
+            assert::throws<invalid_argument>([&] { assembly sut { token, nullptr, &assembly_metadata }; });
         }
 
         TEST_METHOD(constructor_throws_invalid_argument_when_IMetaDataAssemblyImport_is_null)
         {
             mdAssembly token {};
-            StubMetaDataImport metaDataImport {};
-            assert::throws<invalid_argument>([&] { assembly sut { token, &metaDataImport, nullptr }; });
+            stub_IMetaDataImport2 metadata {};
+            assert::throws<invalid_argument>([&] { assembly sut { token, &metadata, nullptr }; });
         }
 
         TEST_METHOD(constructor_stores_metadata_token_in_const_field_because_assembly_identity_doesnt_change)
         {
             mdAssembly token { 42 };
-            StubMetaDataImport metadata {};
-            StubMetaDataAssemblyImport assembly_metadata {};
+            stub_IMetaDataImport2 metadata {};
+            stub_IMetaDataAssemblyImport assembly_metadata {};
 
             assembly sut { token, &metadata, &assembly_metadata };
 
@@ -40,8 +40,8 @@ namespace unconstrained { namespace clr { namespace metadata
         TEST_METHOD(constructor_stores_IMetaDataImport_in_const_com_ptr_to_guarantee_correct_reference_management)
         {
             mdAssembly token {};
-            StubMetaDataImport metadata {};
-            StubMetaDataAssemblyImport assembly_metadata {};
+            stub_IMetaDataImport2 metadata {};
+            stub_IMetaDataAssemblyImport assembly_metadata {};
           
             assembly sut { token, &metadata, &assembly_metadata };
 
@@ -52,8 +52,8 @@ namespace unconstrained { namespace clr { namespace metadata
         TEST_METHOD(constructor_stores_IMetaDataAssemblyImport_in_const_com_ptr_to_guarantee_correct_reference_management)
         {
             mdAssembly token {};
-            StubMetaDataImport metadata {};
-            StubMetaDataAssemblyImport assembly_metadata {};
+            stub_IMetaDataImport2 metadata {};
+            stub_IMetaDataAssemblyImport assembly_metadata {};
 
             assembly sut { token, &metadata, &assembly_metadata };
 
