@@ -1,8 +1,12 @@
 #include "stdafx.h"
 #include "stub_IMetaDataAssemblyImport.h"
+#include "stub_IMetaDataDispenserEx.h"
 #include "stub_IMetaDataImport2.h"
+#include "cxxunit\hijack.h"
 #include "unconstrained\clr\metadata\assembly.h"
+#include "unconstrained\clr\metadata\implementation.h"
 
+using namespace cxxunit;
 using namespace std;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -60,5 +64,25 @@ namespace unconstrained { namespace clr { namespace metadata
             assert::is_same<const com_ptr<IMetaDataAssemblyImport>, decltype(sut.assembly_metadata)>();
             Assert::AreEqual<void*>(&assembly_metadata, sut.assembly_metadata.get());
         }
+
+        #pragma region load_from
+
+        TEST_METHOD(load_from_obtains_IMetaDataDispenser_using_testable_factory_method)
+        {
+            bool create_dispenser_invoked = false;
+            stub_IMetaDataDispenserEx dispenser;
+            function<com_ptr<IMetaDataDispenserEx>(void)> create_dispenser_mock = [&] 
+            { 
+                create_dispenser_invoked = true;
+                return com_ptr<IMetaDataDispenserEx> { &dispenser }; 
+            };
+            auto h = hijack(implementation::create_dispenser, create_dispenser_mock);
+
+            auto ignore = assert::throws<exception>([&] { assembly::load_from(L"ignore.dll"); });
+
+            Assert::IsTrue(create_dispenser_invoked);
+        }
+
+        #pragma endregion
     };
 }}}

@@ -155,7 +155,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="cxxunit\hijack.h" />
     <ClInclude Include="clr\metadata\stub_IMetaDataAssemblyImport.h" />
+    <ClInclude Include="clr\metadata\stub_IMetaDataDispenserEx.h" />
     <ClInclude Include="clr\metadata\stub_IMetaDataImport2.h" />
     <ClInclude Include="assert.h" />
     <ClInclude Include="com\stub_IUnknown.h" />
