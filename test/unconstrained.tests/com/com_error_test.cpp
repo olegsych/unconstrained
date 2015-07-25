@@ -2,6 +2,7 @@
 #include "assert.h"
 #include "unconstrained\com\com_error.h"
 
+using namespace simply;
 using namespace std;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -20,7 +21,7 @@ namespace unconstrained { namespace com
         TEST_METHOD(what_returns_system_message_describing_hresult)
         {
             com_error sut { E_NOINTERFACE };
-            assert::contains("No such interface supported", sut.what());
+            assert::find("No such interface supported", sut.what());
         }
     };
 }}

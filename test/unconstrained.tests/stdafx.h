@@ -16,5 +16,6 @@
 #include <ppltasks.h>
 #include <CppUnitTest.h>
 
-#include "assert.h"
+#include <simply/assert.h>
+#include <simply/utility.h>
 

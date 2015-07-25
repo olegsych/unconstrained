@@ -2,11 +2,11 @@
 #include "stub_IMetaDataAssemblyImport.h"
 #include "stub_IMetaDataDispenserEx.h"
 #include "stub_IMetaDataImport2.h"
-#include "cxxunit\hijack.h"
 #include "unconstrained\clr\metadata\assembly.h"
 #include "unconstrained\clr\metadata\implementation.h"
 
-using namespace cxxunit;
+using namespace simply;
+using namespace simply::utility;
 using namespace std;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -14,7 +14,7 @@ namespace unconstrained { namespace clr { namespace metadata
 {
     TEST_CLASS(assembly_test)
     {
-    public:
+    public:        
         TEST_METHOD(constructor_throws_invalid_argument_when_IMetaDataImport_is_null)
         {
             mdAssembly token {};
@@ -71,12 +71,13 @@ namespace unconstrained { namespace clr { namespace metadata
         {
             bool create_dispenser_invoked = false;
             stub_IMetaDataDispenserEx dispenser;
-            function<com_ptr<IMetaDataDispenserEx>(void)> create_dispenser_mock = [&] 
-            { 
-                create_dispenser_invoked = true;
-                return com_ptr<IMetaDataDispenserEx> { &dispenser }; 
+            temporary<function<com_ptr<IMetaDataDispenserEx>(void)>> temp { 
+                implementation::create_dispenser, 
+                [&] {
+                    create_dispenser_invoked = true;
+                    return com_ptr<IMetaDataDispenserEx> { &dispenser };
+                }
             };
-            auto h = hijack(implementation::create_dispenser, create_dispenser_mock);
 
             auto ignore = assert::throws<exception>([&] { assembly::load_from(L"ignore.dll"); });
 

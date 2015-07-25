@@ -2,6 +2,7 @@
 #include "stub_IUnknown.h"
 #include "unconstrained\com\com_ptr.h"
 
+using namespace simply;
 using namespace std;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -19,7 +20,7 @@ namespace unconstrained { namespace com
         TEST_METHOD(raw_constructor_throws_invalid_argument_when_given_object_is_null)
         {
             IUnknown* object = nullptr;
-            Assert::ExpectException<invalid_argument>([&] { com_ptr<IUnknown> sut(object); });
+            assert::throws<invalid_argument>([&] { com_ptr<IUnknown> sut(object); });
         }
 
         TEST_METHOD(raw_constructor_stores_given_raw_pointer)

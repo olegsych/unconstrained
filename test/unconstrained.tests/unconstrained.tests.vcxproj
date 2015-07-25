@@ -155,11 +155,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="cxxunit\hijack.h" />
     <ClInclude Include="clr\metadata\stub_IMetaDataAssemblyImport.h" />
     <ClInclude Include="clr\metadata\stub_IMetaDataDispenserEx.h" />
     <ClInclude Include="clr\metadata\stub_IMetaDataImport2.h" />
-    <ClInclude Include="assert.h" />
     <ClInclude Include="com\stub_IUnknown.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
@@ -168,7 +166,6 @@
     <ClCompile Include="clr\metadata\implementation_test.cpp" />
     <ClCompile Include="clr\profiler\factory_test.cpp" />
     <ClCompile Include="clr\profiler\callback_test.cpp" />
-    <ClCompile Include="assert.cpp" />
     <ClCompile Include="com\com_error_test.cpp" />
     <ClCompile Include="com\com_ptr_test.cpp" />
     <ClCompile Include="com\com_test.cpp" />
@@ -184,7 +181,17 @@
       <Project>{dfc7ad75-e109-4a99-b554-3665702f3609}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\..\packages\simply.0.1.0-build16\build\native\simply.targets" Condition="Exists('..\..\packages\simply.0.1.0-build16\build\native\simply.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\simply.0.1.0-build16\build\native\simply.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\simply.0.1.0-build16\build\native\simply.targets'))" />
+  </Target>
 </Project>
