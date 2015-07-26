@@ -81,7 +81,7 @@ namespace unconstrained { namespace clr { namespace metadata
 
             auto ignore = assert::throws<exception>([&] { assembly::load_from(L"ignore.dll"); });
 
-            Assert::IsTrue(create_dispenser_invoked);
+            assert::is_true(create_dispenser_invoked);
         }
 
         #pragma endregion

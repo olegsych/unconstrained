@@ -13,7 +13,7 @@ namespace unconstrained { namespace clr { namespace profiler
     public:
         TEST_METHOD(ClassImplementsICorProfilerCallbackInterface5ForCompatibilityWithClr45)
         {          
-            Assert::IsTrue(is_base_of<ICorProfilerCallback5, callback>::value);
+            assert::is_base_of<ICorProfilerCallback5, callback>();
         }
 
         #pragma region IUnknown

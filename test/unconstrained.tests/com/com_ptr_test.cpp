@@ -42,7 +42,7 @@ namespace unconstrained { namespace com
 
             com_ptr<IUnknown> sut { &stub };
 
-            Assert::IsTrue(reference_added);
+            assert::is_true(reference_added);
         }
 
         TEST_METHOD(copy_constructor_stores_raw_pointer_extracted_from_source)
@@ -217,7 +217,7 @@ namespace unconstrained { namespace com
 
             sut.~com_ptr();
 
-            Assert::IsTrue(reference_released);
+            assert::is_true(reference_released);
         }
 
         TEST_METHOD(destructor_does_nothing_if_object_is_null)
@@ -232,7 +232,7 @@ namespace unconstrained { namespace com
 
             void** result = sut;
 
-            Assert::IsTrue(result == reinterpret_cast<void**>(&sut.object));
+            assert::is_true(result == reinterpret_cast<void**>(&sut.object));
         }
     };
 }}

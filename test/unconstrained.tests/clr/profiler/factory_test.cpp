@@ -13,18 +13,18 @@ namespace unconstrained { namespace clr { namespace profiler
     {
         TEST_METHOD(ClassImplementsIClassFactoryToSupportInstantiationByClr)
         {
-            Assert::IsTrue(is_base_of<IClassFactory, factory>::value);
+            assert::is_base_of<IClassFactory, factory>();
         }
 
         TEST_METHOD(ClassIsConcreteSoThatItCanBeInstantiatedByModule)
         {
-            Assert::IsFalse(is_abstract<factory>::value);
+            assert::is_concrete<factory>();
         }
 
         TEST_METHOD(ClassHasUniqueIdRepresentingCLSID)
         {
             const GUID clsid = { 0xf2ac8f68, 0x16d5, 0x4d3b, { 0xa5, 0x8, 0x85, 0x49, 0x66, 0xd3, 0x64, 0x93 } };
-            Assert::IsTrue(clsid == __uuidof(factory));
+            assert::is_true(clsid == __uuidof(factory));
         }
 
         #pragma region get_class_object
@@ -106,7 +106,7 @@ namespace unconstrained { namespace clr { namespace profiler
             unique_ptr<IUnknown> sut { new factory() };
             void* object;
             Assert::AreEqual(S_OK, sut->QueryInterface(IID_IUnknown, &object));
-            Assert::IsTrue(static_cast<IUnknown*>(sut.get()) == reinterpret_cast<IUnknown*>(object));
+            assert::is_true(static_cast<IUnknown*>(sut.get()) == reinterpret_cast<IUnknown*>(object));
         }
 
         TEST_METHOD(QueryInterfaceReturnsOkAndPointerToInstanceWhenInterfaceIdIsIClassFactory)
@@ -114,7 +114,7 @@ namespace unconstrained { namespace clr { namespace profiler
             unique_ptr<IUnknown> sut { new factory() };
             void* object;
             Assert::AreEqual(S_OK, sut->QueryInterface(IID_IClassFactory, &object));
-            Assert::IsTrue(static_cast<IClassFactory*>(sut.get()) == reinterpret_cast<IClassFactory*>(object));
+            assert::is_true(static_cast<IClassFactory*>(sut.get()) == reinterpret_cast<IClassFactory*>(object));
         }
 
         TEST_METHOD(QueryInterfaceIncrementsReferenceCountWhenInterfaceIdIsIClassFactory)
