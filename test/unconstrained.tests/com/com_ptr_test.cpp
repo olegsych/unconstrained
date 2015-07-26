@@ -14,7 +14,7 @@ namespace unconstrained { namespace com
         TEST_METHOD(default_constructor_initializes_instance_with_nullptr)
         {
             com_ptr<IUnknown> sut;
-            Assert::IsNull(sut.get());
+            assert::null(sut.get());
         }
 
         TEST_METHOD(raw_constructor_throws_invalid_argument_when_given_object_is_null)
@@ -69,7 +69,7 @@ namespace unconstrained { namespace com
         {
             com_ptr<IUnknown> source;
             com_ptr<IUnknown> sut { source };
-            Assert::IsNull(sut.get());
+            assert::null(sut.get());
         }
 
         TEST_METHOD(move_constructor_stores_raw_pointer_extracted_from_source)
@@ -85,7 +85,7 @@ namespace unconstrained { namespace com
             stub_IUnknown stub;
             com_ptr<IUnknown> source { &stub };
             com_ptr<IUnknown> sut { move(source) };
-            Assert::IsNull(source.get());
+            assert::null(source.get());
         }
 
         TEST_METHOD(move_constructor_doesnt_call_AddRef_because_it_moves_raw_pointer)

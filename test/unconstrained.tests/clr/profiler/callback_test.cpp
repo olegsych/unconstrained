@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "unconstrained\clr\profiler\callback.h"
 
+using namespace simply;
 using namespace concurrency;
 using namespace std;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -28,7 +29,7 @@ namespace unconstrained { namespace clr { namespace profiler
             unique_ptr<IUnknown> sut { new callback() };
             void* pObject;
             Assert::AreEqual(E_NOINTERFACE, sut->QueryInterface(IID_IDispatch, &pObject));
-            Assert::IsNull(pObject);
+            assert::null(pObject);
         }
 
         TEST_METHOD(QueryInterfaceReturnsInstanceAndAddsReferenceWhenRequestedInterfaceIsIUnknown)
