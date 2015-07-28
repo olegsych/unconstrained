@@ -8,7 +8,6 @@
 using namespace simply;
 using namespace simply::utility;
 using namespace std;
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace unconstrained { namespace clr { namespace metadata 
 {
@@ -38,7 +37,7 @@ namespace unconstrained { namespace clr { namespace metadata
             assembly sut { token, &metadata, &assembly_metadata };
 
             assert::is_same<const mdAssembly, decltype(sut.token)>();
-            Assert::AreEqual(token, sut.token);
+            assert::is_equal(token, sut.token);
         }
 
         TEST_METHOD(constructor_stores_IMetaDataImport_in_const_com_ptr_to_guarantee_correct_reference_management)
@@ -50,7 +49,7 @@ namespace unconstrained { namespace clr { namespace metadata
             assembly sut { token, &metadata, &assembly_metadata };
 
             assert::is_same<const com_ptr<IMetaDataImport2>, decltype(sut.metadata)>();
-            Assert::AreEqual<void*>(&metadata, sut.metadata.get());
+            assert::is_equal<void*>(&metadata, sut.metadata.get());
         }
 
         TEST_METHOD(constructor_stores_IMetaDataAssemblyImport_in_const_com_ptr_to_guarantee_correct_reference_management)
@@ -62,7 +61,7 @@ namespace unconstrained { namespace clr { namespace metadata
             assembly sut { token, &metadata, &assembly_metadata };
 
             assert::is_same<const com_ptr<IMetaDataAssemblyImport>, decltype(sut.assembly_metadata)>();
-            Assert::AreEqual<void*>(&assembly_metadata, sut.assembly_metadata.get());
+            assert::is_equal<void*>(&assembly_metadata, sut.assembly_metadata.get());
         }
 
         #pragma region load_from

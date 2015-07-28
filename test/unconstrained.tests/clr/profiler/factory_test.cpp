@@ -5,7 +5,6 @@
 using namespace simply;
 using namespace concurrency;
 using namespace std;
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace unconstrained { namespace clr { namespace profiler 
 {
@@ -32,7 +31,7 @@ namespace unconstrained { namespace clr { namespace profiler
         TEST_METHOD(get_class_object_returns_E_INVALIDARG_when_object_is_null)
         {
             HRESULT result = factory::get_class_object(__uuidof(factory), __uuidof(IClassFactory), nullptr);
-            Assert::AreEqual(E_INVALIDARG, result);
+            assert::is_equal(E_INVALIDARG, result);
         }
 
         TEST_METHOD(get_class_object_returns_CLASS_E_CLASSNOTAVAILABLE_when_given_unknown_class_id)
@@ -41,8 +40,8 @@ namespace unconstrained { namespace clr { namespace profiler
             CoCreateGuid(&unknownClassId);
             void* object = reinterpret_cast<void*>(-1);
             HRESULT result = factory::get_class_object(unknownClassId, __uuidof(IClassFactory), &object);
-            Assert::AreEqual(CLASS_E_CLASSNOTAVAILABLE, result);
-            assert::null(object);
+            assert::is_equal(CLASS_E_CLASSNOTAVAILABLE, result);
+            assert::is_null(object);
         }
 
         TEST_METHOD(get_class_object_returns_E_NOINTERFACE_and_null_object_when_given_unknown_interface_id)
@@ -51,16 +50,16 @@ namespace unconstrained { namespace clr { namespace profiler
             CoCreateGuid(&unknownInterfaceId);
             void* object = reinterpret_cast<void*>(-1);
             HRESULT result = factory::get_class_object(__uuidof(factory), unknownInterfaceId, &object);
-            Assert::AreEqual(E_NOINTERFACE, result);
-            assert::null(object);
+            assert::is_equal(E_NOINTERFACE, result);
+            assert::is_null(object);
         }
 
         TEST_METHOD(get_class_object_returns_IClassFactory_object_when_given_known_class_and_interface_id)
         {
             IClassFactory* object;
             HRESULT result = factory::get_class_object(__uuidof(factory), __uuidof(IClassFactory), reinterpret_cast<void**>(&object));
-            Assert::AreEqual(S_OK, result);
-            assert::not_null(dynamic_cast<factory*>(object));
+            assert::is_equal(S_OK, result);
+            assert::is_not_null(dynamic_cast<factory*>(object));
         }
 
         #ifdef _DEBUG
@@ -75,10 +74,10 @@ namespace unconstrained { namespace clr { namespace profiler
 
             void* object;
             HRESULT result = factory::get_class_object(__uuidof(factory), unknownInterfaceId, &object);
-            Assert::AreEqual(E_NOINTERFACE, result);
+            assert::is_equal(E_NOINTERFACE, result);
 
             _CrtMemCheckpoint(&memoryAfter);
-            Assert::AreEqual(FALSE, _CrtMemDifference(&memoryDifference, &memoryBefore, &memoryAfter));
+            assert::is_equal(FALSE, _CrtMemDifference(&memoryDifference, &memoryBefore, &memoryAfter));
         }
 
         #endif
@@ -90,22 +89,22 @@ namespace unconstrained { namespace clr { namespace profiler
         TEST_METHOD(QueryInterfaceReturnsInvalidArgResultWhenObjectIsNull)
         {
             unique_ptr<IUnknown> sut { new factory() };
-            Assert::AreEqual(E_INVALIDARG, sut->QueryInterface(IID_IClassFactory, nullptr));
+            assert::is_equal(E_INVALIDARG, sut->QueryInterface(IID_IClassFactory, nullptr));
         }
 
         TEST_METHOD(QueryInterfaceReturnsNoInterfaceAndNullWhenInterfaceIdIsNotSupported)
         {
             unique_ptr<IUnknown> sut { new factory() };
             void* object;
-            Assert::AreEqual(E_NOINTERFACE, sut->QueryInterface(IID_IDispatch, &object));
-            assert::null(object);
+            assert::is_equal(E_NOINTERFACE, sut->QueryInterface(IID_IDispatch, &object));
+            assert::is_null(object);
         }
 
         TEST_METHOD(QueryInterfaceReturnsOkAndPointerToInstanceWhenInterfaceIdIsIUnknown)
         {
             unique_ptr<IUnknown> sut { new factory() };
             void* object;
-            Assert::AreEqual(S_OK, sut->QueryInterface(IID_IUnknown, &object));
+            assert::is_equal(S_OK, sut->QueryInterface(IID_IUnknown, &object));
             assert::is_true(static_cast<IUnknown*>(sut.get()) == reinterpret_cast<IUnknown*>(object));
         }
 
@@ -113,7 +112,7 @@ namespace unconstrained { namespace clr { namespace profiler
         {
             unique_ptr<IUnknown> sut { new factory() };
             void* object;
-            Assert::AreEqual(S_OK, sut->QueryInterface(IID_IClassFactory, &object));
+            assert::is_equal(S_OK, sut->QueryInterface(IID_IClassFactory, &object));
             assert::is_true(static_cast<IClassFactory*>(sut.get()) == reinterpret_cast<IClassFactory*>(object));
         }
 
@@ -122,13 +121,13 @@ namespace unconstrained { namespace clr { namespace profiler
             unique_ptr<IUnknown> sut { new factory() };
             void* object;
             sut->QueryInterface(IID_IClassFactory, &object);
-            Assert::AreEqual(1UL, sut->AddRef() - 1);
+            assert::is_equal(1UL, sut->AddRef() - 1);
         }
 
         TEST_METHOD(ConstructorInitializesReferenceCountToZero)
         {
             unique_ptr<IUnknown> sut { new factory() };
-            Assert::AreEqual(0UL, sut->AddRef() - 1);
+            assert::is_equal(0UL, sut->AddRef() - 1);
         }
 
         TEST_METHOD(AddRefReturnsIncrementedReferenceCount)
@@ -136,7 +135,7 @@ namespace unconstrained { namespace clr { namespace profiler
             unique_ptr<IUnknown> sut { new factory() };
             unsigned long original = sut->AddRef();
             unsigned long incremented = sut->AddRef();
-            Assert::AreEqual(original + 1, incremented);
+            assert::is_equal(original + 1, incremented);
         }
 
         TEST_METHOD(AddRefIsThreadSafe)
@@ -160,7 +159,7 @@ namespace unconstrained { namespace clr { namespace profiler
 
             when_all(tasks.begin(), tasks.end()).wait();
 
-            Assert::AreEqual(totalReferenceCount, sut->AddRef() - 1);
+            assert::is_equal(totalReferenceCount, sut->AddRef() - 1);
         }
 
         TEST_METHOD(ReleaseReturnsDecrementedReferenceCount)
@@ -169,7 +168,7 @@ namespace unconstrained { namespace clr { namespace profiler
             sut->AddRef();
             unsigned long original = sut->AddRef();
             unsigned long decremented = sut->Release();
-            Assert::AreEqual(original - 1, decremented);
+            assert::is_equal(original - 1, decremented);
         }
 
         TEST_METHOD(ReleaseIsThreadSafe)
@@ -196,7 +195,7 @@ namespace unconstrained { namespace clr { namespace profiler
             }
 
             when_all(tasks.begin(), tasks.end()).wait();
-            Assert::AreEqual(0UL, sut->Release());
+            assert::is_equal(0UL, sut->Release());
         }
 
         #if _DEBUG
@@ -213,8 +212,8 @@ namespace unconstrained { namespace clr { namespace profiler
             long requestNumber;
             char* fileName;
             int lineNumber;
-            Assert::AreEqual(FALSE, _CrtIsMemoryBlock(sut, memorySize, &requestNumber, &fileName, &lineNumber));
-            Assert::AreEqual(0UL, referenceCount);
+            assert::is_false(_CrtIsMemoryBlock(sut, memorySize, &requestNumber, &fileName, &lineNumber));
+            assert::is_equal(0UL, referenceCount);
         }
 
         #endif
@@ -226,7 +225,7 @@ namespace unconstrained { namespace clr { namespace profiler
         TEST_METHOD(CreateInstanceReturnsInvalidArgumentErrorWhenObjectIsNull)
         {
             unique_ptr<IClassFactory> sut { new factory() };
-            Assert::AreEqual(E_INVALIDARG, sut->CreateInstance(nullptr, IID_IUnknown, nullptr));
+            assert::is_equal(E_INVALIDARG, sut->CreateInstance(nullptr, IID_IUnknown, nullptr));
         }
 
         TEST_METHOD(CreateInstanceReturnsNoAggregationErrorWhenOuterObjectIsSpecifiedBecauseAggregationIsNotSupported)
@@ -234,24 +233,24 @@ namespace unconstrained { namespace clr { namespace profiler
             unique_ptr<IClassFactory> sut { new factory() };
             unique_ptr<IUnknown> outer = make_unique<callback>();
             void* object;
-            Assert::AreEqual(CLASS_E_NOAGGREGATION, sut->CreateInstance(outer.get(), IID_IUnknown, &object));
-            assert::null(object);
+            assert::is_equal(CLASS_E_NOAGGREGATION, sut->CreateInstance(outer.get(), IID_IUnknown, &object));
+            assert::is_null(object);
         }
 
         TEST_METHOD(CreateInstanceReturnsSuccessAndRequestedInterfaceInstance)
         {
             unique_ptr<IClassFactory> sut { new factory() };
             IUnknown* object = reinterpret_cast<IUnknown*>(-1);
-            Assert::AreEqual(S_OK, sut->CreateInstance(nullptr, __uuidof(ICorProfilerCallback), reinterpret_cast<void**>(&object)));
-            assert::not_null(dynamic_cast<ICorProfilerCallback*>(object));
+            assert::is_equal(S_OK, sut->CreateInstance(nullptr, __uuidof(ICorProfilerCallback), reinterpret_cast<void**>(&object)));
+            assert::is_not_null(dynamic_cast<ICorProfilerCallback*>(object));
         }
 
         TEST_METHOD(CreateInstanceReturnsNoInterfaceAndNullWhenInterfaceIsNotSupported)
         {
             unique_ptr<IClassFactory> sut { new factory() };
             IUnknown* object = reinterpret_cast<IUnknown*>(-1);
-            Assert::AreEqual(E_NOINTERFACE, sut->CreateInstance(nullptr, __uuidof(IDispatch), reinterpret_cast<void**>(&object)));
-            assert::null(object);
+            assert::is_equal(E_NOINTERFACE, sut->CreateInstance(nullptr, __uuidof(IDispatch), reinterpret_cast<void**>(&object)));
+            assert::is_null(object);
         }
 
         #if _DEBUG
@@ -267,7 +266,7 @@ namespace unconstrained { namespace clr { namespace profiler
             sut->CreateInstance(nullptr, __uuidof(IDispatch), reinterpret_cast<void**>(&object));
 
             _CrtMemCheckpoint(&memoryAfter);
-            Assert::AreEqual(FALSE, _CrtMemDifference(&memoryDifference, &memoryBefore, &memoryAfter));
+            assert::is_false(_CrtMemDifference(&memoryDifference, &memoryBefore, &memoryAfter));
         }
 
         #endif
@@ -275,7 +274,7 @@ namespace unconstrained { namespace clr { namespace profiler
         TEST_METHOD(LockServerReturnsNotImplementedErrorBecauseItIsNotUsedByClr)
         {
             unique_ptr<IClassFactory> sut { new factory() };
-            Assert::AreEqual(E_NOTIMPL, sut->LockServer(TRUE));
+            assert::is_equal(E_NOTIMPL, sut->LockServer(TRUE));
         }
 
         #pragma endregion

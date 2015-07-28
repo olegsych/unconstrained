@@ -4,7 +4,6 @@
 
 using namespace simply;
 using namespace std;
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace unconstrained { namespace com 
 {
@@ -14,7 +13,7 @@ namespace unconstrained { namespace com
         TEST_METHOD(default_constructor_initializes_instance_with_nullptr)
         {
             com_ptr<IUnknown> sut;
-            assert::null(sut.get());
+            assert::is_null(sut.get());
         }
 
         TEST_METHOD(raw_constructor_throws_invalid_argument_when_given_object_is_null)
@@ -27,7 +26,7 @@ namespace unconstrained { namespace com
         {
             stub_IUnknown stub;
             com_ptr<IUnknown> sut { &stub };
-            Assert::AreEqual<void*>(&stub, sut.get());
+            assert::is_equal<void*>(&stub, sut.get());
         }
 
         TEST_METHOD(raw_constructor_calls_AddRef_because_it_stores_new_copy_of_raw_pointer)
@@ -50,7 +49,7 @@ namespace unconstrained { namespace com
             stub_IUnknown stub;
             com_ptr<IUnknown> source { &stub };
             com_ptr<IUnknown> sut { source };
-            Assert::AreEqual<void*>(&stub, sut.get());
+            assert::is_equal<void*>(&stub, sut.get());
         }
 
         TEST_METHOD(copy_constructor_calls_AddRef_because_it_stores_new_copy_of_raw_pointer)
@@ -62,14 +61,14 @@ namespace unconstrained { namespace com
 
             com_ptr<IUnknown> sut { source };
 
-            Assert::AreEqual(2, reference_count);
+            assert::is_equal(2, reference_count);
         }
 
         TEST_METHOD(copy_constructor_does_nothing_when_source_raw_pointer_is_null)
         {
             com_ptr<IUnknown> source;
             com_ptr<IUnknown> sut { source };
-            assert::null(sut.get());
+            assert::is_null(sut.get());
         }
 
         TEST_METHOD(move_constructor_stores_raw_pointer_extracted_from_source)
@@ -77,7 +76,7 @@ namespace unconstrained { namespace com
             stub_IUnknown stub;
             com_ptr<IUnknown> source { &stub };
             com_ptr<IUnknown> sut { move(source) };
-            Assert::AreEqual<void*>(&stub, sut.get());
+            assert::is_equal<void*>(&stub, sut.get());
         }
 
         TEST_METHOD(move_constructor_removes_pointer_from_source)
@@ -85,7 +84,7 @@ namespace unconstrained { namespace com
             stub_IUnknown stub;
             com_ptr<IUnknown> source { &stub };
             com_ptr<IUnknown> sut { move(source) };
-            assert::null(source.get());
+            assert::is_null(source.get());
         }
 
         TEST_METHOD(move_constructor_doesnt_call_AddRef_because_it_moves_raw_pointer)
@@ -97,7 +96,7 @@ namespace unconstrained { namespace com
             stub.add_ref = [&] { return ++references_added; };
             com_ptr<IUnknown> sut { move(source) };
 
-            Assert::AreEqual(0, references_added);
+            assert::is_equal(0, references_added);
         }
 
         TEST_METHOD(copy_assignment_stores_raw_pointer_extracted_from_source)
@@ -108,7 +107,7 @@ namespace unconstrained { namespace com
 
             sut = source;
 
-            Assert::AreEqual<void*>(&stub, sut.get());
+            assert::is_equal<void*>(&stub, sut.get());
         }
 
         TEST_METHOD(copy_assignment_returns_reference_to_self)
@@ -118,7 +117,7 @@ namespace unconstrained { namespace com
 
             com_ptr<IUnknown>& result = (sut = source);
 
-            Assert::AreEqual<void*>(&sut, &result);
+            assert::is_equal<void*>(&sut, &result);
         }
 
         TEST_METHOD(copy_assignment_calls_AddRef_for_newly_stored_raw_pointer)
@@ -131,7 +130,7 @@ namespace unconstrained { namespace com
             stub.add_ref = [&] { return ++references_added; };
             sut = source;
 
-            Assert::AreEqual(1, references_added);
+            assert::is_equal(1, references_added);
         }
 
         TEST_METHOD(copy_assigned_calls_Release_for_previously_stored_raw_pointer)
@@ -144,7 +143,7 @@ namespace unconstrained { namespace com
             stub.release = [&] { return ++references_released; };
             sut = source;
 
-            Assert::AreEqual(1, references_released);
+            assert::is_equal(1, references_released);
         }
 
         TEST_METHOD(move_assignment_stores_raw_pointer_extracted_from_source)
@@ -154,7 +153,7 @@ namespace unconstrained { namespace com
 
             sut = com_ptr<IUnknown> { &stub };
 
-            Assert::AreEqual<void*>(&stub, sut.get());
+            assert::is_equal<void*>(&stub, sut.get());
         }
 
         TEST_METHOD(move_assignment_returns_reference_to_self)
@@ -163,7 +162,7 @@ namespace unconstrained { namespace com
 
             com_ptr<IUnknown>& result = (sut = com_ptr<IUnknown> {});
 
-            Assert::AreEqual<void*>(&sut, &result);
+            assert::is_equal<void*>(&sut, &result);
         }
 
         TEST_METHOD(move_assignment_calls_Release_for_previously_stored_raw_pointer)
@@ -175,7 +174,7 @@ namespace unconstrained { namespace com
             stub.release = [&] { return ++references_released; };
             sut = com_ptr<IUnknown> {};
 
-            Assert::AreEqual(1, references_released);
+            assert::is_equal(1, references_released);
         }
 
         TEST_METHOD(move_assignment_doesnt_call_AddRef_because_it_moves_raw_pointer)
@@ -188,7 +187,7 @@ namespace unconstrained { namespace com
             stub.add_ref = [&] { return ++references_added; };
             sut = move(source);
 
-            Assert::AreEqual(0, references_added);
+            assert::is_equal(0, references_added);
         }
 
         TEST_METHOD(move_assignment_prevents_source_from_calling_Release_because_it_moves_raw_pointer)
@@ -201,7 +200,7 @@ namespace unconstrained { namespace com
             stub.release = [&] { return ++references_released; };
             sut = move(source);
 
-            Assert::AreEqual(0, references_released);
+            assert::is_equal(0, references_released);
         }
 
         TEST_METHOD(destructor_calls_Release_because_raw_pointer_is_going_out_of_scope)

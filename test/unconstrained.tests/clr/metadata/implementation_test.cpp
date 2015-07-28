@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "unconstrained\clr\metadata\implementation.h"
 
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace simply;
 using namespace unconstrained::com;
 
 namespace unconstrained { namespace clr { namespace metadata { namespace implementation 
@@ -13,7 +13,7 @@ namespace unconstrained { namespace clr { namespace metadata { namespace impleme
         {
             com_ptr<IMetaDataDispenserEx> dispenser = create_dispenser();
             com_ptr<IMetaDataDispenserEx> check;
-            Assert::AreEqual(S_OK, dispenser.get()->QueryInterface(IID_IMetaDataDispenserEx, check));
+            assert::is_equal(S_OK, dispenser.get()->QueryInterface(IID_IMetaDataDispenserEx, check));
         }
     };
 }}}}

@@ -4,7 +4,6 @@
 
 using namespace simply;
 using namespace std;
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace unconstrained { namespace com 
 {
@@ -15,7 +14,7 @@ namespace unconstrained { namespace com
         {
             HRESULT expected = E_FAIL;
             com_error sut { expected };
-            Assert::AreEqual(expected, sut.hresult());
+            assert::is_equal(expected, sut.hresult());
         }
 
         TEST_METHOD(what_returns_system_message_describing_hresult)
