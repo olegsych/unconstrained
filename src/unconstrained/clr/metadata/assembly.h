@@ -19,7 +19,7 @@ namespace unconstrained { namespace clr { namespace metadata
         const com_ptr<IMetaDataImport2> metadata;
         const com_ptr<IMetaDataAssemblyImport> assembly_metadata;
 
-        assembly(mdAssembly token, IMetaDataImport2* metadata, IMetaDataAssemblyImport* assembly_metadata);
+        assembly(mdAssembly token, com_ptr<IMetaDataImport2> metadata, com_ptr<IMetaDataAssemblyImport> assembly_metadata);
 
         friend class assembly_test;
     };

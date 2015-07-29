@@ -1,11 +1,17 @@
 #pragma once
 
+#include <functional>
 #include <cor.h>
 
 namespace unconstrained { namespace clr { namespace metadata 
 {
     class stub_IMetaDataDispenserEx : public IMetaDataDispenserEx
     {
+    public:
+        std::function<HRESULT(const wchar_t*, unsigned long, const GUID&, IUnknown**)> open_scope =
+            [](const wchar_t*, unsigned long, const GUID&, IUnknown**) { return S_OK; };
+
+    private:
         virtual HRESULT __stdcall QueryInterface(REFIID riid, void ** ppvObject) override
         {
             return E_NOTIMPL;
@@ -26,9 +32,9 @@ namespace unconstrained { namespace clr { namespace metadata
             return E_NOTIMPL;
         }
         
-        virtual HRESULT __stdcall OpenScope(LPCWSTR szScope, DWORD dwOpenFlags, REFIID riid, IUnknown ** ppIUnk) override
+        virtual HRESULT __stdcall OpenScope(const wchar_t* scope, unsigned long flags, const GUID& interface_id, IUnknown** object) override
         {
-            return E_NOTIMPL;
+            return this->open_scope(scope, flags, interface_id, object);
         }
         
         virtual HRESULT __stdcall OpenScopeOnMemory(LPCVOID pData, ULONG cbData, DWORD dwOpenFlags, REFIID riid, IUnknown ** ppIUnk) override
