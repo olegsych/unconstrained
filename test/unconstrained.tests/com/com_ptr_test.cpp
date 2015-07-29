@@ -233,5 +233,31 @@ namespace unconstrained { namespace com
 
             assert::is_true(result == reinterpret_cast<void**>(&sut.object));
         }
+
+        TEST_METHOD(IUnknownpp_conversion_operator_returns_address_of_object_field_for_use_with_metadata_apis)
+        {
+            com_ptr<IUnknown> sut;
+
+            IUnknown** result = sut;
+
+            assert::is_true(result == &sut.object);
+        }
+
+        TEST_METHOD(dereferencing_operator_returns_object_for_accessing_its_members)
+        {
+            stub_IUnknown stub;
+            com_ptr<IUnknown> sut { &stub };
+
+            IUnknown* result = sut.operator->();
+
+            assert::is_equal<IUnknown*>(&stub, result);
+        }
+
+        TEST_METHOD(dereferencing_operator_throws_logic_error_when_object_is_null)
+        {
+            com_ptr<IUnknown> sut;
+            auto e = assert::throws<logic_error>([&] { sut.operator->(); });
+            assert::find("null", e->what());
+        }
     };
 }}

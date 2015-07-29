@@ -56,6 +56,21 @@ namespace unconstrained { namespace com
             return reinterpret_cast<void**>(&object);
         }
 
+        operator IUnknown**()
+        {
+            return reinterpret_cast<IUnknown**>(&object);
+        }
+
+        T* operator->()
+        {
+            if (!object)
+            {
+                throw logic_error { "a nullptr cannot be dereferenced." };
+            }
+
+            return object;
+        }
+
         ~com_ptr()
         {
             release_object();
