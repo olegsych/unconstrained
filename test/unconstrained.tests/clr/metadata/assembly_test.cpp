@@ -22,6 +22,8 @@ namespace unconstrained { namespace clr { namespace metadata
         };
 
     public:        
+        #pragma region constructor
+
         TEST_METHOD(constructor_throws_invalid_argument_when_IMetaDataImport_is_null)
         {
             mdAssembly token {};
@@ -71,6 +73,8 @@ namespace unconstrained { namespace clr { namespace metadata
             assert::is_same<const com_ptr<IMetaDataAssemblyImport>, decltype(sut.assembly_metadata)>();
             assert::is_equal<void*>(&assembly_metadata, sut.assembly_metadata.get());
         }
+
+        #pragma endregion
 
         #pragma region load_from
 
@@ -131,7 +135,7 @@ namespace unconstrained { namespace clr { namespace metadata
         {
             stub_IMetaDataImport2 metadata;
             bool metadata_released { false };
-            metadata.OnRelease = [&] 
+            metadata.release = [&] 
             {
                 metadata_released = true;
                 return 1;
@@ -190,7 +194,7 @@ namespace unconstrained { namespace clr { namespace metadata
         {
             stub_IMetaDataAssemblyImport assembly_metadata;
             bool assembly_metadata_released { false };
-            assembly_metadata.OnRelease = [&]
+            assembly_metadata.release = [&]
             {
                 assembly_metadata_released = true;
                 return 1;

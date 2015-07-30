@@ -11,8 +11,8 @@ namespace unconstrained { namespace clr { namespace metadata
     class stub_IMetaDataAssemblyImport : public IMetaDataAssemblyImport
     {
     public:
-        function<ULONG(void)> OnAddRef = []{ return 2; };
-        function<ULONG(void)> OnRelease = []{ return 2; };
+        function<ULONG(void)> add_ref = []{ return 2; };
+        function<ULONG(void)> release = []{ return 2; };
 
         virtual HRESULT __stdcall QueryInterface(REFIID riid, void ** ppvObject) override
         {
@@ -21,12 +21,12 @@ namespace unconstrained { namespace clr { namespace metadata
 
         virtual ULONG __stdcall AddRef(void) override
         {
-            return this->OnAddRef();
+            return this->add_ref();
         }
         
         virtual ULONG __stdcall Release(void) override
         {
-            return this->OnRelease();
+            return this->release();
         }
         
         virtual HRESULT __stdcall GetAssemblyProps(mdAssembly mda, const void ** ppbPublicKey, ULONG * pcbPublicKey, ULONG * pulHashAlgId, LPWSTR szName, ULONG cchName, ULONG * pchName, ASSEMBLYMETADATA * pMetaData, DWORD * pdwAssemblyFlags) override
