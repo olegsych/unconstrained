@@ -12,7 +12,8 @@ namespace unconstrained { namespace clr { namespace metadata
     {
     public:
         function<ULONG(void)> add_ref = []{ return 2; };
-        function<ULONG(void)> release = []{ return 2; };
+        function<ULONG(void)> release = []{ return 1; };
+        function<HRESULT(mdAssembly*)> get_assembly_from_scope = [](mdAssembly*) { return S_OK; };
 
         virtual HRESULT __stdcall QueryInterface(REFIID riid, void ** ppvObject) override
         {
@@ -74,9 +75,9 @@ namespace unconstrained { namespace clr { namespace metadata
             return E_NOTIMPL;
         }
         
-        virtual HRESULT __stdcall GetAssemblyFromScope(mdAssembly * ptkAssembly) override
+        virtual HRESULT __stdcall GetAssemblyFromScope(mdAssembly* assembly) override
         {
-            return E_NOTIMPL;
+            return this->get_assembly_from_scope(assembly);
         }
         
         virtual HRESULT __stdcall FindExportedTypeByName(LPCWSTR szName, mdToken mdtExportedType, mdExportedType * ptkExportedType) override

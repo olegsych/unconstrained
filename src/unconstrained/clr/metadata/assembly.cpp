@@ -21,7 +21,10 @@ namespace unconstrained { namespace clr { namespace metadata
         com_ptr<IMetaDataAssemblyImport> assembly_metadata;
         com::check(dispenser->OpenScope(file_path.c_str(), CorOpenFlags::ofReadOnly, IID_IMetaDataAssemblyImport, assembly_metadata));
 
-        return assembly { 0, metadata, assembly_metadata };
+        mdAssembly assembly_token;
+        assembly_metadata->GetAssemblyFromScope(&assembly_token);
+
+        return assembly { assembly_token, metadata, assembly_metadata };
     }
 }}}
 
