@@ -215,6 +215,15 @@ namespace unconstrained { namespace clr { namespace metadata
             assert::is_true(assembly_metadata_released);
         }
 
+        TEST_METHOD(load_from_checks_HRESULT_returned_by_GetAssemblyFromScope)
+        {
+            this->assembly_metadata.get_assembly_from_scope = [](mdAssembly*) { return E_INVALIDARG; };
+
+            unique_ptr<com_error> e = assert::throws<com_error>([] { assembly::load_from(L"any.dll"); });
+
+            assert::is_equal(E_INVALIDARG, e->hresult());
+        }
+
         #pragma endregion
     };
 }}}
