@@ -7,6 +7,7 @@
 #include <array>
 #include <functional>
 #include <memory>
+#include <sstream>
 #include <typeinfo>
 #include <type_traits>
 
@@ -18,4 +19,6 @@
 
 #include <simply/assert.h>
 #include <simply/utility.h>
+
+#include <unconstrained/clr/metadata.h>
 
