@@ -162,8 +162,10 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="clr\metadata\assembly_identity_test.cpp" />
     <ClCompile Include="clr\metadata\assembly_test.cpp" />
     <ClCompile Include="clr\metadata\implementation_test.cpp" />
+    <ClCompile Include="clr\metadata\processor_architecture_test.cpp" />
     <ClCompile Include="clr\metadata\version_test.cpp" />
     <ClCompile Include="clr\profiler\factory_test.cpp" />
     <ClCompile Include="clr\profiler\callback_test.cpp" />
@@ -187,12 +189,12 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\..\packages\simply.0.1.0-build32\build\native\simply.targets" Condition="Exists('..\..\packages\simply.0.1.0-build32\build\native\simply.targets')" />
+    <Import Project="..\..\packages\simply.0.1.0-build34\build\native\simply.targets" Condition="Exists('..\..\packages\simply.0.1.0-build34\build\native\simply.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\simply.0.1.0-build32\build\native\simply.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\simply.0.1.0-build32\build\native\simply.targets'))" />
+    <Error Condition="!Exists('..\..\packages\simply.0.1.0-build34\build\native\simply.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\simply.0.1.0-build34\build\native\simply.targets'))" />
   </Target>
 </Project>

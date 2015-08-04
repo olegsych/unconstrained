@@ -131,7 +131,7 @@ namespace unconstrained { namespace clr { namespace metadata
             
             stream << version { 1, 2, 3, 4 };
 
-            assert::is_equal<string>("1.2.3.4", stream.str());
+            assert::is_equal("1.2.3.4", stream.str());
         }
     };
 }}}

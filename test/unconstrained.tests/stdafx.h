@@ -8,6 +8,7 @@
 #include <functional>
 #include <memory>
 #include <sstream>
+#include <string>
 #include <typeinfo>
 #include <type_traits>
 

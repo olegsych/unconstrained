@@ -134,7 +134,9 @@
   <ItemGroup>
     <ClInclude Include="clr\metadata.h" />
     <ClInclude Include="clr\metadata\assembly.h" />
+    <ClInclude Include="clr\metadata\assembly_identity.h" />
     <ClInclude Include="clr\metadata\implementation.h" />
+    <ClInclude Include="clr\metadata\processor_architecture.h" />
     <ClInclude Include="clr\metadata\version.h" />
     <ClInclude Include="clr\profiler\callback.h" />
     <ClInclude Include="clr\profiler\factory.h" />
