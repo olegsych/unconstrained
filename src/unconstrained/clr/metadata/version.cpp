@@ -11,11 +11,6 @@ namespace unconstrained { namespace clr { namespace metadata
             && left.revision() == right.revision();
     }
 
-    bool operator!=(const version& left, const version& right)
-    {
-        return !(left == right);
-    }
-
     bool operator<(const version& left, const version& right)
     {
         if (left.major() < right.major())
@@ -46,47 +41,5 @@ namespace unconstrained { namespace clr { namespace metadata
         }
 
         return left.revision() < right.revision();
-    }
-
-    bool operator>(const version& left, const version& right)
-    {
-        if (left.major() > right.major())
-        {
-            return true;
-        }
-        else if (left.major() < right.major())
-        {
-            return false;
-        }
-
-        if (left.minor() > right.minor())
-        {
-            return true;
-        }
-        else if (left.minor() < right.minor())
-        {
-            return false;
-        }
-
-        if (left.build() > right.build())
-        {
-            return true;
-        }
-        else if (left.build() < right.build())
-        {
-            return false;
-        }
-
-        return left.revision() > right.revision();
-    }
-
-    bool operator<=(const version& left, const version& right)
-    {
-        return !(left > right);
-    }
-
-    bool operator>=(const version& left, const version& right)
-    {
-        return !(left < right);
     }
 }}}

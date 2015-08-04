@@ -1,9 +1,12 @@
 #pragma once
 
 #include <ostream>
+#include <utility>
 
 namespace unconstrained { namespace clr { namespace metadata 
 {
+    using namespace std::rel_ops;
+
     class version
     {
     public:
@@ -40,11 +43,7 @@ namespace unconstrained { namespace clr { namespace metadata
     };
 
     bool operator==(const version& left, const version& right);
-    bool operator!=(const version& left, const version& right);
     bool operator<(const version& left, const version& right);
-    bool operator>(const version& left, const version& right);
-    bool operator<=(const version& left, const version& right);
-    bool operator>=(const version& left, const version& right);
 
     template <class char_t, class traits>
     std::basic_ostream<char_t, traits>& operator<<(std::basic_ostream<char_t, traits>& stream, const version& version)
