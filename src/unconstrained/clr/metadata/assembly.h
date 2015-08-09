@@ -3,7 +3,8 @@
 #pragma warning(disable: 4091)
 #include <cor.h>
 #pragma warning(default: 4091)
-#include "unconstrained\com\com_ptr.h"
+#include <unconstrained/clr/metadata/assembly_identity.h>
+#include <unconstrained/com/com_ptr.h>
 
 namespace unconstrained { namespace clr { namespace metadata 
 {
@@ -12,6 +13,8 @@ namespace unconstrained { namespace clr { namespace metadata
     class assembly
     {
     public:
+        assembly_identity identity();
+
         static assembly load_from(const wstring& file_path);
 
     private:

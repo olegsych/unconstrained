@@ -5,6 +5,7 @@
 #pragma once
 
 #include <array>
+#include <cstring>
 #include <functional>
 #include <memory>
 #include <sstream>

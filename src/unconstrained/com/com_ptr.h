@@ -61,7 +61,7 @@ namespace unconstrained { namespace com
             return reinterpret_cast<IUnknown**>(&object);
         }
 
-        T* operator->()
+        T* operator->() const
         {
             if (!object)
             {

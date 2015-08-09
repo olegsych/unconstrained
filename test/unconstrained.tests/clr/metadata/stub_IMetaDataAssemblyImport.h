@@ -14,6 +14,8 @@ namespace unconstrained { namespace clr { namespace metadata
         function<ULONG(void)> add_ref = []{ return 2; };
         function<ULONG(void)> release = []{ return 1; };
         function<HRESULT(mdAssembly*)> get_assembly_from_scope = [](mdAssembly*) { return S_OK; };
+        function<HRESULT(mdAssembly, const void**, ULONG*, ULONG*, LPWSTR, ULONG, ULONG*, ASSEMBLYMETADATA*, DWORD*)> get_assembly_props =
+            [](mdAssembly, const void**, ULONG*, ULONG*, LPWSTR, ULONG, ULONG*, ASSEMBLYMETADATA*, DWORD*) { return S_OK; };
 
         virtual HRESULT __stdcall QueryInterface(REFIID riid, void ** ppvObject) override
         {
@@ -30,9 +32,9 @@ namespace unconstrained { namespace clr { namespace metadata
             return this->release();
         }
         
-        virtual HRESULT __stdcall GetAssemblyProps(mdAssembly mda, const void ** ppbPublicKey, ULONG * pcbPublicKey, ULONG * pulHashAlgId, LPWSTR szName, ULONG cchName, ULONG * pchName, ASSEMBLYMETADATA * pMetaData, DWORD * pdwAssemblyFlags) override
+        virtual HRESULT __stdcall GetAssemblyProps(mdAssembly assembly, const void** public_key, ULONG* public_key_size, ULONG* hash_algorithm, LPWSTR name, ULONG name_capacity, ULONG* name_size, ASSEMBLYMETADATA* metadata, DWORD* assembly_flags) override
         {
-            return E_NOTIMPL;
+            return this->get_assembly_props(assembly, public_key, public_key_size, hash_algorithm, name, name_capacity, name_size, metadata, assembly_flags);
         }
         
         virtual HRESULT __stdcall GetAssemblyRefProps(mdAssemblyRef mdar, const void ** ppbPublicKeyOrToken, ULONG * pcbPublicKeyOrToken, LPWSTR szName, ULONG cchName, ULONG * pchName, ASSEMBLYMETADATA * pMetaData, const void ** ppbHashValue, ULONG * pcbHashValue, DWORD * pdwAssemblyRefFlags) override

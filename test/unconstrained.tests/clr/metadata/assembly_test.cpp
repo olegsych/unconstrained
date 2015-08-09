@@ -87,6 +87,120 @@ namespace unconstrained { namespace clr { namespace metadata
 
         #pragma endregion
 
+        #pragma region identity
+
+        TEST_METHOD(identity_invokes_GetAssemblyProps_and_checks_its_result)
+        {
+            bool invoked = false;
+            this->assembly_metadata.get_assembly_props = [&](mdAssembly, const void**, ULONG*, ULONG*, LPWSTR, ULONG, ULONG*, ASSEMBLYMETADATA*, DWORD*)
+            {
+                invoked = true;
+                return E_NOTIMPL;
+            };
+            assembly sut { 0, &this->metadata, &this->assembly_metadata };
+
+            auto expected = assert::throws<com_error>([&] { sut.identity(); });
+
+            assert::is_true(invoked);
+            assert::is_equal(E_NOTIMPL, expected->hresult());
+        }
+
+        TEST_METHOD(identity_invokes_GetAssemblyProps_with_assembly_token_to_obtain_its_properties)
+        {
+            mdAssembly expected_token { 42 };
+            mdAssembly actual_token;
+            this->assembly_metadata.get_assembly_props = [&](mdAssembly assembly, const void**, ULONG*, ULONG*, LPWSTR, ULONG, ULONG*, ASSEMBLYMETADATA*, DWORD*)
+            {
+                actual_token = assembly;
+                return E_NOTIMPL;
+            };
+            assembly sut { expected_token, &this->metadata, &this->assembly_metadata };
+
+            auto expected = assert::throws<com_error>([&] { sut.identity(); });
+
+            assert::is_equal(expected_token, actual_token);
+        }
+
+        TEST_METHOD(identity_invokes_GetAssemblyProps_with_large_buffer_for_assembly_name)
+        {
+            wchar_t* actual_buffer;
+            unsigned long actual_buffer_size;
+            this->assembly_metadata.get_assembly_props = [&](mdAssembly, const void**, ULONG*, ULONG*, LPWSTR buffer, ULONG buffer_size, ULONG*, ASSEMBLYMETADATA*, DWORD*)
+            {
+                actual_buffer = buffer;
+                actual_buffer_size = buffer_size;
+                return E_NOTIMPL;
+            };
+            assembly sut { 0, &this->metadata, &this->assembly_metadata };
+
+            auto expected = assert::throws<com_error>([&] {sut.identity(); });
+
+            assert::is_not_null(actual_buffer);
+            assert::is_equal(1024UL, actual_buffer_size);
+        }
+
+        TEST_METHOD(identity_returns_assembly_identity_with_name_returned_by_GetAssemblyProps)
+        {
+            wstring expected_name { L"TestAssembly.dll" };
+            this->assembly_metadata.get_assembly_props = [&](mdAssembly, const void**, ULONG*, ULONG*, LPWSTR name, ULONG, ULONG* name_length, ASSEMBLYMETADATA*, DWORD*)
+            {
+                memcpy(name, expected_name.c_str(), expected_name.length() * sizeof(wchar_t));
+                *name_length = static_cast<ULONG>(expected_name.length());
+                return S_OK;
+            };
+            assembly sut { 0, &this->metadata, &this->assembly_metadata };
+
+            assembly_identity identity = sut.identity();
+
+            assert::is_equal(expected_name, identity.name());
+        }
+
+        TEST_METHOD(identity_returns_assembly_identity_with_processor_architecture_returned_by_GetAssemblyProps)
+        {
+            identity_returns_assembly_identity_with_processor_architecture_returned_by_GetAssemblyProps(processor_architecture::none, CorAssemblyFlags::afPA_None);
+            identity_returns_assembly_identity_with_processor_architecture_returned_by_GetAssemblyProps(processor_architecture::msil, CorAssemblyFlags::afPA_MSIL);
+            identity_returns_assembly_identity_with_processor_architecture_returned_by_GetAssemblyProps(processor_architecture::x86, CorAssemblyFlags::afPA_x86);
+            identity_returns_assembly_identity_with_processor_architecture_returned_by_GetAssemblyProps(processor_architecture::ia64, CorAssemblyFlags::afPA_IA64);
+            identity_returns_assembly_identity_with_processor_architecture_returned_by_GetAssemblyProps(processor_architecture::amd64, CorAssemblyFlags::afPA_AMD64);
+            identity_returns_assembly_identity_with_processor_architecture_returned_by_GetAssemblyProps(processor_architecture::arm, CorAssemblyFlags::afPA_ARM);
+        }
+
+        void identity_returns_assembly_identity_with_processor_architecture_returned_by_GetAssemblyProps(processor_architecture expected, CorAssemblyFlags actual)
+        {
+            this->assembly_metadata.get_assembly_props = [&](mdAssembly, const void**, ULONG*, ULONG*, LPWSTR, ULONG, ULONG* name_length, ASSEMBLYMETADATA*, DWORD* assembly_flags)
+            {
+                *name_length = 0;
+                *assembly_flags = actual;
+                return S_OK;
+            };
+            assembly sut { 0, &this->metadata, &this->assembly_metadata };
+
+            assembly_identity identity = sut.identity();
+
+            assert::is_equal(expected, identity.processor_architecture());
+        }
+
+        TEST_METHOD(identity_returns_assembly_identity_with_version_returned_by_GetAssemblyProps)
+        {
+            version expected_version { 1, 2, 3, 4 };
+            this->assembly_metadata.get_assembly_props = [&](mdAssembly, const void**, ULONG*, ULONG*, LPWSTR, ULONG, ULONG* name_length, ASSEMBLYMETADATA* assembly_metadata, DWORD*)
+            {
+                *name_length = 0;
+                assembly_metadata->usMajorVersion = expected_version.major();
+                assembly_metadata->usMinorVersion = expected_version.minor();
+                assembly_metadata->usBuildNumber = expected_version.build();
+                assembly_metadata->usRevisionNumber = expected_version.revision();
+                return S_OK;
+            };
+            assembly sut { 0, &this->metadata, &this->assembly_metadata };
+
+            assembly_identity identity = sut.identity();
+
+            assert::is_equal(expected_version, identity.version());
+        }
+
+        #pragma endregion
+
         #pragma region load_from
 
         TEST_METHOD(load_from_returns_assembly_created_with_metadata_obtained_from_dispenser)
