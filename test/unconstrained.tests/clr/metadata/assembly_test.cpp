@@ -19,7 +19,7 @@ namespace unconstrained { namespace clr { namespace metadata
         stub_IMetaDataAssemblyImport assembly_metadata;
         stub_IMetaDataDispenserEx dispenser;
         stub_IMetaDataImport2 metadata;
-        temporary<function<com_ptr<IMetaDataDispenserEx>(void)>> create_dispenser_stub 
+        temporary<function<com_ptr<IMetaDataDispenserEx>(void)>> create_dispenser_stub
         {
             implementation::create_dispenser,
             [&] { return com_ptr<IMetaDataDispenserEx> { &dispenser }; }
@@ -41,7 +41,7 @@ namespace unconstrained { namespace clr { namespace metadata
             return E_NOINTERFACE;
         }
 
-    public:        
+    public:
         assembly_test()
         {
             this->dispenser.open_scope = bind(&assembly_test::stub_open_scope, this, _1, _2, _3, _4);
@@ -197,6 +197,31 @@ namespace unconstrained { namespace clr { namespace metadata
             assembly_identity identity = sut.identity();
 
             assert::is_equal(expected_version, identity.version());
+        }
+
+        TEST_METHOD(identity_returns_assembly_identity_with_hash_algorithm_returned_by_GetAssemblyProps)
+        {
+            this->identity_returns_assembly_identity_with_hash_algorithm_returned_by_GetAssemblyProps(hash_algorithm::none, 0);
+            this->identity_returns_assembly_identity_with_hash_algorithm_returned_by_GetAssemblyProps(hash_algorithm::md5, 32771);
+            this->identity_returns_assembly_identity_with_hash_algorithm_returned_by_GetAssemblyProps(hash_algorithm::sha1, 32772);
+            this->identity_returns_assembly_identity_with_hash_algorithm_returned_by_GetAssemblyProps(hash_algorithm::sha256, 32780);
+            this->identity_returns_assembly_identity_with_hash_algorithm_returned_by_GetAssemblyProps(hash_algorithm::sha384, 32781);
+            this->identity_returns_assembly_identity_with_hash_algorithm_returned_by_GetAssemblyProps(hash_algorithm::sha512, 32782);
+        }
+
+        void identity_returns_assembly_identity_with_hash_algorithm_returned_by_GetAssemblyProps(hash_algorithm expected, ULONG actual)
+        {
+            this->assembly_metadata.get_assembly_props = [&](mdAssembly, const void**, ULONG*, ULONG* hash_algorithm, LPWSTR, ULONG, ULONG* name_length, ASSEMBLYMETADATA*, DWORD*)
+            {
+                *name_length = 0;
+                *hash_algorithm = actual;
+                return S_OK;
+            };
+            assembly sut { 0, &this->metadata, &this->assembly_metadata };
+
+            assembly_identity identity = sut.identity();
+
+            assert::is_equal(expected, identity.hash_algorithm());
         }
 
         #pragma endregion

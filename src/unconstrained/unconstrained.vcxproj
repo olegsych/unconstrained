@@ -135,6 +135,7 @@
     <ClInclude Include="clr\metadata.h" />
     <ClInclude Include="clr\metadata\assembly.h" />
     <ClInclude Include="clr\metadata\assembly_identity.h" />
+    <ClInclude Include="clr\metadata\hash_algorithm.h" />
     <ClInclude Include="clr\metadata\implementation.h" />
     <ClInclude Include="clr\metadata\processor_architecture.h" />
     <ClInclude Include="clr\metadata\version.h" />

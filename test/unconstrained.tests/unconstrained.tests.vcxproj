@@ -164,6 +164,7 @@
   <ItemGroup>
     <ClCompile Include="clr\metadata\assembly_identity_test.cpp" />
     <ClCompile Include="clr\metadata\assembly_test.cpp" />
+    <ClCompile Include="clr\metadata\hash_algorithm_test.cpp" />
     <ClCompile Include="clr\metadata\implementation_test.cpp" />
     <ClCompile Include="clr\metadata\processor_architecture_test.cpp" />
     <ClCompile Include="clr\metadata\version_test.cpp" />
