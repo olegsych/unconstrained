@@ -142,8 +142,9 @@ namespace unconstrained { namespace clr { namespace metadata
         TEST_METHOD(identity_returns_assembly_identity_with_name_returned_by_GetAssemblyProps)
         {
             wstring expected_name { L"TestAssembly.dll" };
-            this->assembly_metadata.get_assembly_props = [&](mdAssembly, const void**, ULONG*, ULONG*, LPWSTR name, ULONG, ULONG* name_length, ASSEMBLYMETADATA*, DWORD*)
+            this->assembly_metadata.get_assembly_props = [&](mdAssembly, const void**, ULONG* key_length, ULONG*, LPWSTR name, ULONG, ULONG* name_length, ASSEMBLYMETADATA*, DWORD*)
             {
+                *key_length = 0;
                 memcpy(name, expected_name.c_str(), expected_name.length() * sizeof(wchar_t));
                 *name_length = static_cast<ULONG>(expected_name.length());
                 return S_OK;
@@ -167,9 +168,10 @@ namespace unconstrained { namespace clr { namespace metadata
 
         void identity_returns_assembly_identity_with_processor_architecture_returned_by_GetAssemblyProps(processor_architecture expected, CorAssemblyFlags actual)
         {
-            this->assembly_metadata.get_assembly_props = [&](mdAssembly, const void**, ULONG*, ULONG*, LPWSTR, ULONG, ULONG* name_length, ASSEMBLYMETADATA*, DWORD* assembly_flags)
+            this->assembly_metadata.get_assembly_props = [&](mdAssembly, const void**, ULONG* key_length, ULONG*, LPWSTR, ULONG, ULONG* name_length, ASSEMBLYMETADATA*, DWORD* assembly_flags)
             {
                 *name_length = 0;
+                *key_length = 0;
                 *assembly_flags = actual;
                 return S_OK;
             };
@@ -183,9 +185,10 @@ namespace unconstrained { namespace clr { namespace metadata
         TEST_METHOD(identity_returns_assembly_identity_with_version_returned_by_GetAssemblyProps)
         {
             version expected_version { 1, 2, 3, 4 };
-            this->assembly_metadata.get_assembly_props = [&](mdAssembly, const void**, ULONG*, ULONG*, LPWSTR, ULONG, ULONG* name_length, ASSEMBLYMETADATA* assembly_metadata, DWORD*)
+            this->assembly_metadata.get_assembly_props = [&](mdAssembly, const void**, ULONG* key_length, ULONG*, LPWSTR, ULONG, ULONG* name_length, ASSEMBLYMETADATA* assembly_metadata, DWORD*)
             {
                 *name_length = 0;
+                *key_length = 0;
                 assembly_metadata->usMajorVersion = expected_version.major();
                 assembly_metadata->usMinorVersion = expected_version.minor();
                 assembly_metadata->usBuildNumber = expected_version.build();
@@ -211,9 +214,10 @@ namespace unconstrained { namespace clr { namespace metadata
 
         void identity_returns_assembly_identity_with_hash_algorithm_returned_by_GetAssemblyProps(hash_algorithm expected, ULONG actual)
         {
-            this->assembly_metadata.get_assembly_props = [&](mdAssembly, const void**, ULONG*, ULONG* hash_algorithm, LPWSTR, ULONG, ULONG* name_length, ASSEMBLYMETADATA*, DWORD*)
+            this->assembly_metadata.get_assembly_props = [&](mdAssembly, const void**, ULONG* key_length, ULONG* hash_algorithm, LPWSTR, ULONG, ULONG* name_length, ASSEMBLYMETADATA*, DWORD*)
             {
                 *name_length = 0;
+                *key_length = 0;
                 *hash_algorithm = actual;
                 return S_OK;
             };
@@ -222,6 +226,24 @@ namespace unconstrained { namespace clr { namespace metadata
             assembly_identity identity = sut.identity();
 
             assert::is_equal(expected, identity.hash_algorithm());
+        }
+
+        TEST_METHOD(identity_returns_assembly_identity_with_public_key_returned_by_GetAssemblyProps)
+        {
+            unsigned char raw_key[] = { 0x41, 0x42, 0x43, 0x44 };
+            this->assembly_metadata.get_assembly_props = [&](mdAssembly, const void** public_key, ULONG* public_key_length, ULONG*, LPWSTR, ULONG, ULONG* name_length, ASSEMBLYMETADATA*, DWORD*)
+            {
+                *name_length = 0;
+                *public_key = raw_key;
+                *public_key_length = sizeof(raw_key);
+                return S_OK;
+            };
+            assembly sut { 0, &this->metadata, &this->assembly_metadata };
+
+            assembly_identity identity = sut.identity();
+
+            const vector<unsigned char> expected_key { begin(raw_key), end(raw_key) };
+            assert::is_true(expected_key == identity.public_key()); // there is no << for vector<unsigned char>
         }
 
         #pragma endregion

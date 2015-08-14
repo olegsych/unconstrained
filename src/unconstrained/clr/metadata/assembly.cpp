@@ -35,21 +35,24 @@ namespace unconstrained { namespace clr { namespace metadata
 
     assembly_identity assembly::identity()
     {
-        //void* public_key;
-        //ULONG public_key_size;
+        const void* public_key;
+        unsigned long public_key_size;
         unsigned long hash_algorithm;
         const unsigned long name_capacity = 1024;
         wchar_t name_buffer[name_capacity];
         unsigned long name_length;
         ASSEMBLYMETADATA metadata;
         unsigned long flags;
-        check(this->assembly_metadata->GetAssemblyProps(this->token, nullptr, nullptr, &hash_algorithm, name_buffer, name_capacity, &name_length, &metadata, &flags));
+
+        check(this->assembly_metadata->GetAssemblyProps(this->token, &public_key, &public_key_size, &hash_algorithm, name_buffer, name_capacity, &name_length, &metadata, &flags));
+        
         return assembly_identity
         {
             wstring { name_buffer, name_length },
             decode_hash_algorithm(hash_algorithm),
             decode_processor_architecture(flags),
-            version { metadata.usMajorVersion, metadata.usMinorVersion, metadata.usBuildNumber, metadata.usRevisionNumber }
+            version { metadata.usMajorVersion, metadata.usMinorVersion, metadata.usBuildNumber, metadata.usRevisionNumber },
+            vector<unsigned char> { reinterpret_cast<const unsigned char*>(public_key), reinterpret_cast<const unsigned char*>(public_key) + public_key_size }
         };
     }
 
