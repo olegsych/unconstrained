@@ -3,7 +3,7 @@
 #include "implementation.h"
 
 using namespace std;
-using namespace unconstrained::com;
+using namespace simply::com;
 
 namespace unconstrained { namespace clr { namespace metadata
 {

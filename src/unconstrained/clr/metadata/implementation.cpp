@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include <functional>
-#include "com.h"
+#include <simply/com.h>
 #include "implementation.h"
 
 using namespace std;
-using namespace unconstrained::com;
+using namespace simply::com;
 
 namespace // unnamed, to prevent direct usage
 {

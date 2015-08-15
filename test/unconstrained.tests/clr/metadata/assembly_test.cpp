@@ -6,10 +6,10 @@
 #include "unconstrained\clr\metadata\implementation.h"
 
 using namespace simply;
+using namespace simply::com;
 using namespace simply::utility;
 using namespace std;
 using namespace std::placeholders;
-using namespace unconstrained::com;
 
 namespace unconstrained { namespace clr { namespace metadata 
 {

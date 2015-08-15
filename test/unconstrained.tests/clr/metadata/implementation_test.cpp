@@ -2,7 +2,7 @@
 #include "unconstrained\clr\metadata\implementation.h"
 
 using namespace simply;
-using namespace unconstrained::com;
+using namespace simply::com;
 
 namespace unconstrained { namespace clr { namespace metadata { namespace implementation 
 {

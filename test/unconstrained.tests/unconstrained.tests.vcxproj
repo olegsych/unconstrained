@@ -158,7 +158,6 @@
     <ClInclude Include="clr\metadata\stub_IMetaDataAssemblyImport.h" />
     <ClInclude Include="clr\metadata\stub_IMetaDataDispenserEx.h" />
     <ClInclude Include="clr\metadata\stub_IMetaDataImport2.h" />
-    <ClInclude Include="com\stub_IUnknown.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -170,9 +169,6 @@
     <ClCompile Include="clr\metadata\version_test.cpp" />
     <ClCompile Include="clr\profiler\factory_test.cpp" />
     <ClCompile Include="clr\profiler\callback_test.cpp" />
-    <ClCompile Include="com\com_error_test.cpp" />
-    <ClCompile Include="com\com_ptr_test.cpp" />
-    <ClCompile Include="com\com_test.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -190,12 +186,16 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\..\packages\simply.0.1.0-build34\build\native\simply.targets" Condition="Exists('..\..\packages\simply.0.1.0-build34\build\native\simply.targets')" />
+    <Import Project="..\..\packages\simply.assert.0.1.0-build38\build\native\simply.assert.targets" Condition="Exists('..\..\packages\simply.assert.0.1.0-build38\build\native\simply.assert.targets')" />
+    <Import Project="..\..\packages\simply.com.0.1.0-build38\build\native\simply.com.targets" Condition="Exists('..\..\packages\simply.com.0.1.0-build38\build\native\simply.com.targets')" />
+    <Import Project="..\..\packages\simply.utility.0.1.0-build38\build\native\simply.utility.targets" Condition="Exists('..\..\packages\simply.utility.0.1.0-build38\build\native\simply.utility.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\simply.0.1.0-build34\build\native\simply.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\simply.0.1.0-build34\build\native\simply.targets'))" />
+    <Error Condition="!Exists('..\..\packages\simply.assert.0.1.0-build38\build\native\simply.assert.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\simply.assert.0.1.0-build38\build\native\simply.assert.targets'))" />
+    <Error Condition="!Exists('..\..\packages\simply.com.0.1.0-build38\build\native\simply.com.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\simply.com.0.1.0-build38\build\native\simply.com.targets'))" />
+    <Error Condition="!Exists('..\..\packages\simply.utility.0.1.0-build38\build\native\simply.utility.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\simply.utility.0.1.0-build38\build\native\simply.utility.targets'))" />
   </Target>
 </Project>
