@@ -166,6 +166,7 @@
     <ClCompile Include="clr\metadata\hash_algorithm_test.cpp" />
     <ClCompile Include="clr\metadata\implementation_test.cpp" />
     <ClCompile Include="clr\metadata\processor_architecture_test.cpp" />
+    <ClCompile Include="clr\metadata\type_test.cpp" />
     <ClCompile Include="clr\metadata\version_test.cpp" />
     <ClCompile Include="clr\profiler\factory_test.cpp" />
     <ClCompile Include="clr\profiler\callback_test.cpp" />

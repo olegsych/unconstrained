@@ -14,6 +14,9 @@ namespace unconstrained { namespace clr { namespace metadata
         function<ULONG(void)> add_ref = []{ return 2; };
         function<ULONG(void)> release = []{ return 1; };
 
+        function<HRESULT(mdTypeDef, LPWSTR, ULONG, ULONG*, DWORD*, mdToken*)> get_type_def_props =
+            [](mdTypeDef, LPWSTR, ULONG, ULONG*, DWORD*, mdToken*) { return S_OK; };
+
         virtual HRESULT __stdcall QueryInterface(REFIID riid, void ** ppvObject) override
         {
             return E_NOTIMPL;
@@ -73,9 +76,9 @@ namespace unconstrained { namespace clr { namespace metadata
             return E_NOTIMPL;
         }
 
-        virtual HRESULT __stdcall GetTypeDefProps(mdTypeDef td, LPWSTR szTypeDef, ULONG cchTypeDef, ULONG * pchTypeDef, DWORD * pdwTypeDefFlags, mdToken * ptkExtends) override
+        HRESULT __stdcall GetTypeDefProps(mdTypeDef td, LPWSTR szTypeDef, ULONG cchTypeDef, ULONG* pchTypeDef, DWORD* pdwTypeDefFlags, mdToken* ptkExtends) override
         {
-            return E_NOTIMPL;
+            return this->get_type_def_props(td, szTypeDef, cchTypeDef, pchTypeDef, pdwTypeDefFlags, ptkExtends);
         }
 
         virtual HRESULT __stdcall GetInterfaceImplProps(mdInterfaceImpl iiImpl, mdTypeDef * pClass, mdToken * ptkIface) override

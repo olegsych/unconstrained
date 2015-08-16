@@ -20,6 +20,7 @@
 #include <CppUnitTest.h>
 
 #include <simply/assert.h>
+#include <simply/com.h>
 #include <simply/utility.h>
 
 #include <unconstrained/clr/metadata.h>
