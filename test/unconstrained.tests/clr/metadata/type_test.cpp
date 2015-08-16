@@ -23,8 +23,8 @@ namespace unconstrained { namespace clr { namespace metadata
 
             type sut { token, _assembly };
 
-            assert::is_same<const mdTypeDef, decltype(sut.token)>();
-            assert::is_equal(token, sut.token);
+            assert::is_same<const mdTypeDef, decltype(sut._token)>();
+            assert::is_equal(token, sut._token);
         }
 
         TEST_METHOD(constructor_throws_invalid_argument_when_assembly_is_nullptr_to_fail_fast)
@@ -38,6 +38,21 @@ namespace unconstrained { namespace clr { namespace metadata
 
             assert::is_same<const shared_ptr<assembly>, decltype(sut._assembly)>();
             assert::is_equal(_assembly.get(), sut._assembly.get());
+        }
+
+        #pragma endregion
+
+        #pragma region assembly
+
+        TEST_METHOD(assembly_returns_const_shared_ptr_to_indicate_that_assembly_cannot_be_changed)
+        {
+            assert::is_same<const shared_ptr<assembly>, decltype(declval<type>().assembly())>();
+        }
+
+        TEST_METHOD(assembly_returns_instance_specified_in_constructor)
+        {
+            type sut { 0, _assembly };
+            assert::is_equal(_assembly.get(), sut.assembly().get());
         }
 
         #pragma endregion
