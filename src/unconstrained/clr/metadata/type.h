@@ -1,26 +1,25 @@
 #pragma once
 
+#include <memory>
 #pragma warning(disable: 4091)
 #include <cor.h>
 #pragma warning(default: 4091)
-#include <simply/com/com_ptr.h>
+#include "assembly.h"
 
 namespace unconstrained { namespace clr { namespace metadata 
 {
-    using simply::com::com_ptr;
-
     class type
     {
     public:
         const std::wstring name() const;
 
     private:
-        type(mdTypeDef token, com_ptr<IMetaDataImport2> metadata);
+        type(mdTypeDef token, std::shared_ptr<assembly> assembly);
 
         static const size_t max_name_length { 1024 };
 
         const mdTypeDef token;
-        const com_ptr<IMetaDataImport2> metadata;
+        const std::shared_ptr<assembly> _assembly;
 
         friend class type_test;
     };

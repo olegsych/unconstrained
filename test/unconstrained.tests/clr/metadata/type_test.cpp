@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "stub_IMetaDataImport2.h"
+#include "stub_IMetaDataAssemblyImport.h"
 
 using namespace simply;
 using namespace simply::com;
@@ -10,6 +11,8 @@ namespace unconstrained { namespace clr { namespace metadata
     TEST_CLASS(type_test)
     {
         stub_IMetaDataImport2 metadata;
+        stub_IMetaDataAssemblyImport assembly_metadata;
+        shared_ptr<assembly> _assembly = make_shared<assembly>(assembly { 0, &metadata, &assembly_metadata });
 
     public:
         #pragma region constructor
@@ -18,23 +21,23 @@ namespace unconstrained { namespace clr { namespace metadata
         {
             mdTypeDef token { 42 };
 
-            type sut { token, &metadata };
+            type sut { token, _assembly };
 
             assert::is_same<const mdTypeDef, decltype(sut.token)>();
             assert::is_equal(token, sut.token);
         }
 
-        TEST_METHOD(constructor_throws_invalid_argument_when_IMetaDataImport2_is_nullptr_to_fail_fast)
+        TEST_METHOD(constructor_throws_invalid_argument_when_assembly_is_nullptr_to_fail_fast)
         {
             assert::throws<invalid_argument>([&] { type { mdTypeDef {0}, nullptr }; });
         }
 
-        TEST_METHOD(constructor_stores_IMetaDataImport2_in_const_com_ptr_to_ensure_correct_resource_management)
+        TEST_METHOD(constructor_stores_assembly_in_const_shared_ptr_to_ensure_correct_resource_management)
         {
-            type sut { mdTypeDef {0}, &metadata };
+            type sut { mdTypeDef {0}, _assembly};
 
-            assert::is_same<const com_ptr<IMetaDataImport2>, decltype(sut.metadata)>();
-            assert::is_equal<IMetaDataImport2*>(&metadata, sut.metadata.get());
+            assert::is_same<const shared_ptr<assembly>, decltype(sut._assembly)>();
+            assert::is_equal(_assembly.get(), sut._assembly.get());
         }
 
         #pragma endregion
@@ -61,7 +64,7 @@ namespace unconstrained { namespace clr { namespace metadata
                 return S_OK;
             };
 
-            type sut { expected_token, &metadata };
+            type sut { expected_token, _assembly };
             const wstring actual_name = sut.name();
 
             assert::is_equal(expected_token, actual_token);
@@ -71,7 +74,7 @@ namespace unconstrained { namespace clr { namespace metadata
 
         TEST_METHOD(name_checks_HRESULT_returned_by_GetTypeDefProps_of_IMetaDataImport2)
         {
-            type sut { 0, &this->metadata };
+            type sut { 0, _assembly };
             this->metadata.get_type_def_props = [&](mdTypeDef, LPWSTR, ULONG, ULONG*, DWORD*, mdToken*){ return E_NOTIMPL; };
 
             assert::throws<com_error>([&] { sut.name(); });

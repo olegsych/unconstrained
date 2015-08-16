@@ -24,7 +24,9 @@ namespace unconstrained { namespace clr { namespace metadata
 
         assembly(mdAssembly token, com_ptr<IMetaDataImport2> metadata, com_ptr<IMetaDataAssemblyImport> assembly_metadata);
 
+        friend class type;
         friend class assembly_test;
+        friend class type_test;
     };
 }}}
 
