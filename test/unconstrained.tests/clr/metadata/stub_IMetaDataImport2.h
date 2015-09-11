@@ -13,6 +13,7 @@ namespace unconstrained { namespace clr { namespace metadata
     public:
         function<ULONG(void)> add_ref = []{ return 2; };
         function<ULONG(void)> release = []{ return 1; };
+		function<void(HCORENUM)> close_enum = [](HCORENUM){};
 
         function<HRESULT(mdTypeDef, LPWSTR, ULONG, ULONG*, DWORD*, mdToken*)> get_type_def_props =
             [](mdTypeDef, LPWSTR, ULONG, ULONG*, DWORD*, mdToken*) { return S_OK; };
@@ -34,6 +35,7 @@ namespace unconstrained { namespace clr { namespace metadata
 
         virtual void __stdcall CloseEnum(HCORENUM hEnum) override
         {
+			this->close_enum(hEnum);
         }
 
         virtual HRESULT __stdcall CountEnum(HCORENUM hEnum, ULONG * pulCount) override
