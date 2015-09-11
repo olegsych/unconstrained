@@ -159,16 +159,18 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\..\packages\simply.com.0.1.0-build39\build\native\simply.com.targets" Condition="Exists('..\..\packages\simply.com.0.1.0-build39\build\native\simply.com.targets')" />
+    <Import Project="..\..\packages\simply.com.0.1.0-build42\build\native\simply.com.targets" Condition="Exists('..\..\packages\simply.com.0.1.0-build42\build\native\simply.com.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\simply.com.0.1.0-build39\build\native\simply.com.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\simply.com.0.1.0-build39\build\native\simply.com.targets'))" />
+    <Error Condition="!Exists('..\..\packages\simply.com.0.1.0-build42\build\native\simply.com.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\simply.com.0.1.0-build42\build\native\simply.com.targets'))" />
   </Target>
 </Project>
