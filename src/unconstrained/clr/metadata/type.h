@@ -4,10 +4,12 @@
 #pragma warning(disable: 4091)
 #include <cor.h>
 #pragma warning(default: 4091)
-#include "assembly.h"
+#include <unconstrained/clr/metadata/assembly.h>
 
 namespace unconstrained { namespace clr { namespace metadata 
 {
+	class assembly;
+
     class type
     {
     public:

@@ -4,6 +4,7 @@
 
 using namespace std;
 using namespace simply::com;
+using namespace simply::utility;
 
 namespace unconstrained { namespace clr { namespace metadata
 {
@@ -55,6 +56,11 @@ namespace unconstrained { namespace clr { namespace metadata
             vector<unsigned char> { reinterpret_cast<const unsigned char*>(public_key), reinterpret_cast<const unsigned char*>(public_key) + public_key_size }
         };
     }
+
+	range<type> assembly::types()
+	{
+		throw logic_error{ "Not implemented" };
+	}
 
     assembly assembly::load_from(const wstring& file_path)
     {

@@ -4,16 +4,22 @@
 #include <cor.h>
 #pragma warning(default: 4091)
 #include <unconstrained/clr/metadata/assembly_identity.h>
+#include <unconstrained/clr/metadata/type.h>
 #include <simply/com/com_ptr.h>
+#include <simply/utility/range.h>
 
 namespace unconstrained { namespace clr { namespace metadata 
 {
     using simply::com::com_ptr;
+	using simply::utility::range;
+
+	class type;
 
     class assembly
     {
     public:
         assembly_identity identity();
+		range<type> types();
 
         static assembly load_from(const std::wstring& file_path);
 
