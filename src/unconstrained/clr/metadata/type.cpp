@@ -28,4 +28,9 @@ namespace unconstrained { namespace clr { namespace metadata
         check(_assembly->metadata->GetTypeDefProps(_token, buffer, type::max_name_length, &actual_length, nullptr, nullptr));
         return wstring { buffer, actual_length };
     }
+
+	unsigned int type::token() const
+	{
+		return _token;
+	}
 }}}

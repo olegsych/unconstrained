@@ -96,5 +96,19 @@ namespace unconstrained { namespace clr { namespace metadata
         }
 
         #pragma endregion
+
+		#pragma region token
+
+		TEST_METHOD(token_returns_value_specified_in_constructor)
+		{
+			mdTypeDef expected { 42 };
+			type sut { expected, _assembly };
+
+			unsigned int actual = sut.token();
+
+			assert::is_equal(expected, actual);
+		}
+
+		#pragma endregion
     };
 }}}

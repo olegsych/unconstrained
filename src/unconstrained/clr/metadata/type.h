@@ -15,6 +15,7 @@ namespace unconstrained { namespace clr { namespace metadata
     public:
         const std::shared_ptr<assembly> assembly() const;
         const std::wstring name() const;
+		unsigned int token() const;
 
     private:
         type(mdTypeDef token, std::shared_ptr<metadata::assembly> assembly);
