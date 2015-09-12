@@ -34,7 +34,7 @@ namespace unconstrained { namespace clr { namespace metadata
     {
     }
 
-    assembly_identity assembly::identity()
+    assembly_identity assembly::identity() const
     {
         const void* public_key;
         unsigned long public_key_size;
@@ -63,7 +63,7 @@ namespace unconstrained { namespace clr { namespace metadata
 		return token;
 	}
 
-	range<type> assembly::types()
+	range<type> assembly::types() const
 	{
 		throw logic_error{ "Not implemented" };
 	}

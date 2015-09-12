@@ -18,9 +18,9 @@ namespace unconstrained { namespace clr { namespace metadata
     class assembly
     {
     public:
-		assembly_identity identity();
+		assembly_identity identity() const;
 		unsigned int token() const;
-		range<type> types();
+		range<type> types() const;
 
         static assembly load_from(const std::wstring& file_path);
 
