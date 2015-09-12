@@ -18,21 +18,19 @@ namespace unconstrained { namespace clr { namespace metadata
     class assembly
     {
     public:
-        assembly_identity identity();
+		assembly_identity identity();
+		unsigned int token() const;
 		range<type> types();
 
         static assembly load_from(const std::wstring& file_path);
 
     private:
-        const mdAssembly token;
-        const com_ptr<IMetaDataImport2> metadata;
-        const com_ptr<IMetaDataAssemblyImport> assembly_metadata;
+        const com_ptr<IMetaDataAssemblyImport> _metadata;
 
-        assembly(mdAssembly token, com_ptr<IMetaDataImport2> metadata, com_ptr<IMetaDataAssemblyImport> assembly_metadata);
+        assembly(com_ptr<IMetaDataAssemblyImport> metadata);
 
         friend class type;
         friend class assembly_test;
-        friend class type_test;
     };
 }}}
 

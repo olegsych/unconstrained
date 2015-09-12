@@ -29,8 +29,8 @@ namespace unconstrained { namespace clr { namespace metadata
         }
     }
 
-    assembly::assembly(mdAssembly token, com_ptr<IMetaDataImport2> metadata, com_ptr<IMetaDataAssemblyImport> assembly_metadata)
-        : token { token }, metadata { metadata}, assembly_metadata { assembly_metadata }
+    assembly::assembly(com_ptr<IMetaDataAssemblyImport> metadata)
+        : _metadata { metadata }
     {
     }
 
@@ -45,8 +45,7 @@ namespace unconstrained { namespace clr { namespace metadata
         ASSEMBLYMETADATA metadata;
         unsigned long flags;
 
-        check(this->assembly_metadata->GetAssemblyProps(this->token, &public_key, &public_key_size, &hash_algorithm, name_buffer, name_capacity, &name_length, &metadata, &flags));
-        
+		check(_metadata->GetAssemblyProps(token(), &public_key, &public_key_size, &hash_algorithm, name_buffer, name_capacity, &name_length, &metadata, &flags));
         return assembly_identity
         {
             wstring { name_buffer, name_length },
@@ -57,6 +56,13 @@ namespace unconstrained { namespace clr { namespace metadata
         };
     }
 
+	unsigned int assembly::token() const
+	{
+		mdAssembly token;
+		check(_metadata->GetAssemblyFromScope(&token));
+		return token;
+	}
+
 	range<type> assembly::types()
 	{
 		throw logic_error{ "Not implemented" };
@@ -65,17 +71,9 @@ namespace unconstrained { namespace clr { namespace metadata
     assembly assembly::load_from(const wstring& file_path)
     {
         com_ptr<IMetaDataDispenserEx> dispenser { implementation::create_dispenser() };
-
-        com_ptr<IMetaDataImport2> metadata;
-        check(dispenser->OpenScope(file_path.c_str(), CorOpenFlags::ofReadOnly, IID_IMetaDataImport2, metadata));
-
-        com_ptr<IMetaDataAssemblyImport> assembly_metadata;
-        check(dispenser->OpenScope(file_path.c_str(), CorOpenFlags::ofReadOnly, IID_IMetaDataAssemblyImport, assembly_metadata));
-
-        mdAssembly assembly_token;
-        check(assembly_metadata->GetAssemblyFromScope(&assembly_token));
-
-        return assembly { assembly_token, metadata, assembly_metadata };
+        com_ptr<IMetaDataAssemblyImport> metadata;
+        check(dispenser->OpenScope(file_path.c_str(), CorOpenFlags::ofReadOnly, IID_IMetaDataAssemblyImport, metadata));
+        return assembly { metadata };
     }
 }}}
 

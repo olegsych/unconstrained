@@ -1,10 +1,10 @@
 #pragma once
 
-#include <memory>
 #pragma warning(disable: 4091)
 #include <cor.h>
 #pragma warning(default: 4091)
 #include <unconstrained/clr/metadata/assembly.h>
+#include <simply/com/com_ptr.h>
 
 namespace unconstrained { namespace clr { namespace metadata 
 {
@@ -13,18 +13,14 @@ namespace unconstrained { namespace clr { namespace metadata
     class type
     {
     public:
-        const std::shared_ptr<assembly> assembly() const;
+        assembly assembly() const;
         const std::wstring name() const;
 		unsigned int token() const;
 
     private:
-        type(mdTypeDef token, std::shared_ptr<metadata::assembly> assembly);
-
-        static const size_t max_name_length { 1024 };
-
+        type(mdTypeDef token, simply::com::com_ptr<IMetaDataImport2> metadata);
         const mdTypeDef _token;
-        const std::shared_ptr<metadata::assembly> _assembly;
-
+        const simply::com::com_ptr<IMetaDataImport2> _metadata;
         friend class type_test;
     };
 }}}

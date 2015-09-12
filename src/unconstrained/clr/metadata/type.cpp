@@ -7,25 +7,28 @@ using namespace std;
 
 namespace unconstrained { namespace clr { namespace metadata 
 {
-    type::type(mdTypeDef token, shared_ptr<metadata::assembly> assembly)
-        : _token {token}, _assembly { assembly }
+    type::type(mdTypeDef token, com_ptr<IMetaDataImport2> metadata)
+        : _token {token}, _metadata { metadata }
     {
-        if (!_assembly)
+        if (!metadata.get())
         {
-            throw invalid_argument("assembly must not be a nullptr.");
+            throw invalid_argument("metadata must not be a nullptr.");
         }
     }
 
-    const shared_ptr<assembly> type::assembly() const
+    assembly type::assembly() const
     {
-        return _assembly;
+		com_ptr<IMetaDataAssemblyImport> assembly_metadata;
+		check(_metadata->QueryInterface(IID_IMetaDataAssemblyImport, assembly_metadata));
+		return metadata::assembly { assembly_metadata };
     }
 
     const wstring type::name() const
     {
-        wchar_t buffer[type::max_name_length];
-        ULONG actual_length;
-        check(_assembly->metadata->GetTypeDefProps(_token, buffer, type::max_name_length, &actual_length, nullptr, nullptr));
+		const unsigned long max_length = 1024;
+        wchar_t buffer[max_length];
+        unsigned long actual_length;
+        check(_metadata->GetTypeDefProps(_token, buffer, max_length, &actual_length, nullptr, nullptr));
         return wstring { buffer, actual_length };
     }
 

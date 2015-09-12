@@ -155,9 +155,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="clr\metadata\stub_IMetaDataAssemblyImport.h" />
     <ClInclude Include="clr\metadata\stub_IMetaDataDispenserEx.h" />
-    <ClInclude Include="clr\metadata\stub_IMetaDataImport2.h" />
+    <ClInclude Include="clr\metadata\stub_metadata.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

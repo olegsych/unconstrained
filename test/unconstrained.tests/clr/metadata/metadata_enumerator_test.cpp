@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "stub_IMetaDataImport2.h"
+#include "stub_metadata.h"
 #include <unconstrained/clr/metadata/metadata_enumerator.h>
 
 using namespace simply;
@@ -49,7 +49,7 @@ namespace unconstrained { namespace clr { namespace metadata
 
 		TEST_METHOD(constructor_initializes_enum_handle_for_use_by_concrete_subclasses)
 		{
-			stub_IMetaDataImport2 metadata;
+			stub_metadata metadata;
 			testable_metadata_enumerator sut { com_ptr<IMetaDataImport2> { &metadata} };
 			assert::is_null(sut.enum_handle());
 		}
@@ -58,7 +58,7 @@ namespace unconstrained { namespace clr { namespace metadata
 		{
 			HCORENUM expected_value = reinterpret_cast<HCORENUM>(42);
 			HCORENUM actual_value { nullptr };
-			stub_IMetaDataImport2 metadata;
+			stub_metadata metadata;
 			metadata.close_enum = [&](HCORENUM e) { actual_value = e; };
 			testable_metadata_enumerator sut { com_ptr<IMetaDataImport2> { &metadata} };
 			sut.enum_handle(expected_value);		
@@ -71,7 +71,7 @@ namespace unconstrained { namespace clr { namespace metadata
 		TEST_METHOD(destructor_doesnt_attempt_to_close_enum_handle_that_wasnt_created)
 		{
 			bool enum_closed { false };
-			stub_IMetaDataImport2 metadata;
+			stub_metadata metadata;
 			metadata.close_enum = [&](HCORENUM e) { enum_closed = true; };
 			testable_metadata_enumerator sut{ com_ptr<IMetaDataImport2> { &metadata} };
 
