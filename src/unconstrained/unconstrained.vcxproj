@@ -140,6 +140,7 @@
     <ClInclude Include="clr\metadata\metadata_enumerator.h" />
     <ClInclude Include="clr\metadata\processor_architecture.h" />
     <ClInclude Include="clr\metadata\type.h" />
+    <ClInclude Include="clr\metadata\type_definition_enumerator.h" />
     <ClInclude Include="clr\metadata\version.h" />
     <ClInclude Include="clr\profiler\callback.h" />
     <ClInclude Include="clr\profiler\factory.h" />
@@ -149,6 +150,7 @@
     <ClCompile Include="clr\metadata\assembly.cpp" />
     <ClCompile Include="clr\metadata\implementation.cpp" />
     <ClCompile Include="clr\metadata\type.cpp" />
+    <ClCompile Include="clr\metadata\type_definition_enumerator.cpp" />
     <ClCompile Include="clr\metadata\version.cpp" />
     <ClCompile Include="clr\profiler\callback.cpp" />
     <ClCompile Include="clr\profiler\factory.cpp" />

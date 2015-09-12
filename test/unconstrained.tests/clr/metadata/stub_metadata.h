@@ -58,6 +58,8 @@ namespace unconstrained { namespace clr { namespace metadata
 		#pragma region IMetaDataImport
 
 		function<void(HCORENUM)> close_enum = [](HCORENUM) {};
+		function<HRESULT(HCORENUM*, mdTypeDef*, ULONG, ULONG*)> enum_type_defs = 
+			[](HCORENUM*, mdTypeDef*, ULONG, ULONG*) { return S_FALSE; };
 		function<HRESULT(mdTypeDef, LPWSTR, ULONG, ULONG*, DWORD*, mdToken*)> get_type_def_props =
 			[](mdTypeDef, LPWSTR, ULONG, ULONG*, DWORD*, mdToken*) { return S_OK; };
 
@@ -76,9 +78,9 @@ namespace unconstrained { namespace clr { namespace metadata
             return E_NOTIMPL;
         }
 
-        HRESULT __stdcall EnumTypeDefs(HCORENUM * phEnum, mdTypeDef rTypeDefs[], ULONG cMax, ULONG * pcTypeDefs) override
+        HRESULT __stdcall EnumTypeDefs(HCORENUM* enum_handle, mdTypeDef* type_definitions, ULONG max_count, ULONG* actual_count) override
         {
-            return E_NOTIMPL;
+            return enum_type_defs(enum_handle, type_definitions, max_count, actual_count);
         }
 
         HRESULT __stdcall EnumInterfaceImpls(HCORENUM * phEnum, mdTypeDef td, mdInterfaceImpl rImpls[], ULONG cMax, ULONG * pcImpls) override
