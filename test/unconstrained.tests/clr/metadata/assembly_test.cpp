@@ -238,6 +238,27 @@ namespace unconstrained { namespace clr { namespace metadata
 
 		#pragma endregion
 
+		#pragma region operator==()
+
+		TEST_METHOD(assemblies_are_equal_when_they_have_same_metadata_scope)
+		{
+			stub_metadata metadata;
+			assembly left { &metadata };
+			assembly right { &metadata };
+			assert::is_true(left == right);
+		}
+
+		TEST_METHOD(assemblies_are_not_equal_when_they_have_different_metadata_scopes)
+		{
+			stub_metadata left_metadata;
+			assembly left { &left_metadata };
+			stub_metadata right_metadata;
+			assembly right { &right_metadata };
+			assert::is_false(left == right);
+		}
+
+		#pragma endregion
+
         #pragma region load_from
 
         TEST_METHOD(load_from_obtains_IMetaDataAssemblyImport_by_opening_scope_with_metadata_dispenser_in_readonly_mode)

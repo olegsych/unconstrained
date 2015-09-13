@@ -68,6 +68,11 @@ namespace unconstrained { namespace clr { namespace metadata
 		throw logic_error{ "Not implemented" };
 	}
 
+	bool assembly::operator==(const assembly& other) const
+	{
+		return _metadata.get() == other._metadata.get();
+	}
+
     assembly assembly::load_from(const wstring& file_path)
     {
         com_ptr<IMetaDataDispenserEx> dispenser { implementation::create_dispenser() };

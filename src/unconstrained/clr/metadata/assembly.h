@@ -21,6 +21,7 @@ namespace unconstrained { namespace clr { namespace metadata
 		assembly_identity identity() const;
 		unsigned int token() const;
 		range<type> types() const;
+		bool operator==(const assembly& other) const;
 
         static assembly load_from(const std::wstring& file_path);
 
