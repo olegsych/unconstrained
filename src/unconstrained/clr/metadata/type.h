@@ -16,11 +16,15 @@ namespace unconstrained { namespace clr { namespace metadata
         assembly assembly() const;
         const std::wstring name() const;
 		unsigned int token() const;
+		bool operator==(const type& other) const;
 
     private:
         type(mdTypeDef token, simply::com::com_ptr<IMetaDataImport2> metadata);
         const mdTypeDef _token;
         const simply::com::com_ptr<IMetaDataImport2> _metadata;
-        friend class type_test;
+        
+		friend class type_definition_enumerator;
+		friend class type_definition_enumerator_test;
+		friend class type_test;
     };
 }}}

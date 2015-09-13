@@ -36,4 +36,10 @@ namespace unconstrained { namespace clr { namespace metadata
 	{
 		return _token;
 	}
+
+	bool type::operator==(const type& other) const
+	{
+		return _token == other._token 
+			&& _metadata.get() == other._metadata.get();
+	}
 }}}
