@@ -34,30 +34,62 @@ namespace unconstrained { namespace clr { namespace metadata
 			assert::throws<com_error>([&] { sut.get_next(&result.type); });
 		}
 
-		TEST_METHOD(get_next_supplies_correct_arguments_in_first_call_to_EnumTypeDefs)
+		TEST_METHOD(get_next_returns_true_and_expected_type_when_called_first_time)
 		{
-			HCORENUM* actual_enum_handle;
-			mdTypeDef* actual_buffer;
-			ULONG actual_buffer_size;
-			ULONG* actual_item_count;
 			stub_metadata metadata;
+			type expected { 42, &metadata };
 			metadata.enum_type_defs = [&](HCORENUM* enum_handle, mdTypeDef* buffer, ULONG buffer_size, ULONG* item_count)
 			{
-				actual_enum_handle = enum_handle;
-				actual_buffer = buffer;
-				actual_buffer_size = buffer_size;
-				actual_item_count = item_count;
-				return S_OK;
+				if (*enum_handle == nullptr)
+				{
+					*buffer = expected.token();
+					*item_count = 1;
+					return S_OK;
+				}
+
+				return S_FALSE;
 			};
 			type_definition_enumerator sut { com_ptr<IMetaDataImport2> { &metadata } };
 
-			element result;
-			sut.get_next(&result.type);
+			element actual;
+			bool result { sut.get_next(&actual.type) };
 
-			assert::is_null(*actual_enum_handle);
-			assert::is_not_null(actual_buffer);
-			assert::is_equal(1UL, actual_buffer_size);
-			assert::is_not_null(actual_item_count);
+			assert::is_true(result);
+			assert::is_true(expected == actual.type);
+		}
+
+		TEST_METHOD(get_next_returns_next_type_when_called_again)
+		{
+			auto handle = reinterpret_cast<HCORENUM>(0x42);
+			stub_metadata metadata;
+			metadata.enum_type_defs = [&](HCORENUM* enum_handle, mdTypeDef* buffer, ULONG buffer_size, ULONG* item_count)
+			{
+				if (*enum_handle == nullptr)
+				{
+					*enum_handle = handle;
+					*buffer = 41;
+					*item_count = 1;
+					return S_OK;
+				}
+
+				if (*enum_handle == handle)
+				{
+					*buffer = 42;
+					*item_count = 1;
+					return S_OK;
+				}
+
+				*item_count = 0;
+				return S_FALSE;
+			};
+			type_definition_enumerator sut { com_ptr<IMetaDataImport2> { &metadata } };
+
+			element e;
+			assert::is_true(sut.get_next(&e.type));
+			assert::is_equal(41U, e.type.token());
+
+			assert::is_true(sut.get_next(&e.type));
+			assert::is_equal(42U, e.type.token());
 		}
 
 		TEST_METHOD(get_next_returns_false_if_EnumTypeDefs_returns_zero_type_definitions)

@@ -14,10 +14,15 @@ namespace unconstrained { namespace clr { namespace metadata
 
 	bool type_definition_enumerator::get_next(type* element)
 	{
-		HCORENUM enum_handle { nullptr };
-		mdTypeDef type_definition;
+		mdTypeDef token;
 		ULONG count;
-		check(metadata->EnumTypeDefs(&enum_handle, &type_definition, 1, &count));
+		check(metadata->EnumTypeDefs(&enum_handle, &token, 1, &count));
+		if (count == 1)
+		{
+			new(element) type { token, metadata };
+			return true;
+		}
+
 		return false;
 	}
 }}}
