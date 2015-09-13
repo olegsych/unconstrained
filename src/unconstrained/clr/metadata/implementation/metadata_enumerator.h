@@ -7,7 +7,7 @@
 #include <simply/com/com_ptr.h>
 #include <simply/utility/enumerator.h>
 
-namespace unconstrained { namespace clr { namespace metadata
+namespace unconstrained { namespace clr { namespace metadata { namespace implementation 
 {
 	template<typename element_t> class metadata_enumerator : public simply::utility::enumerator<element_t>
 	{
@@ -32,4 +32,4 @@ namespace unconstrained { namespace clr { namespace metadata
 			}
 		}
 	};
-}}}
+}}}}

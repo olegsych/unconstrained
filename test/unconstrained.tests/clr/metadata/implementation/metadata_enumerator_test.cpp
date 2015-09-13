@@ -1,12 +1,12 @@
 #include "stdafx.h"
-#include "stub_metadata.h"
-#include <unconstrained/clr/metadata/metadata_enumerator.h>
+#include "../stub_metadata.h"
+#include <unconstrained/clr/metadata/implementation/metadata_enumerator.h>
 
 using namespace simply;
 using namespace simply::utility;
 using namespace std;
 
-namespace unconstrained { namespace clr { namespace metadata
+namespace unconstrained { namespace clr { namespace metadata { namespace implementation
 {
 	TEST_CLASS(metadata_enumerator_test)
 	{
@@ -80,4 +80,4 @@ namespace unconstrained { namespace clr { namespace metadata
 			assert::is_false(enum_closed);
 		}
 	};
-}}}
+}}}}

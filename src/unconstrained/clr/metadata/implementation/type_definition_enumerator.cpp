@@ -5,7 +5,7 @@
 using namespace std;
 using namespace simply::com;
 
-namespace unconstrained { namespace clr { namespace metadata 
+namespace unconstrained { namespace clr { namespace metadata { namespace implementation
 {
 	type_definition_enumerator::type_definition_enumerator(com_ptr<IMetaDataImport2> metadata)
 		: metadata_enumerator<type>(metadata)
@@ -25,7 +25,7 @@ namespace unconstrained { namespace clr { namespace metadata
 
 		return false;
 	}
-}}}
+}}}}
 	
 	
 	
